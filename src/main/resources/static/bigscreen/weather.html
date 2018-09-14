@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>蒙西园区首页</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .main{
+            width: 1100px;
+            left: 20px;
+        }
+        .bg img:nth-child(2){
+            width: 41px;
+            left: 95%;
+        }
+    </style>
+</head>
+<body>
+<div class="bg">
+    <img src="images/bg.png" alt="">
+    <img src="images/bgRight.png" alt="">
+</div>
+<div class="main">
+    <!--<div class="header tc">
+        <img class="responsive" src="images/headerBg.png" alt="">
+        <h3 class="ft18 mgt-54">园区天气</h3>
+    </div>-->
+    <div class="first-background tc mgb30 mgt10">
+        <img class="responsive" src="images/firstBg.png" alt="">
+        <div class="cl weather top25">
+            <div class="lf w60">
+                <div class="title cl">
+                    <h4 class="lf w15">一周天气</h4>
+                    <hr class="lf w75">
+                    <div class="lf product"></div>
+                </div>
+                <div class="weather-content cl mgt20">
+                    <div class="lf w25">
+                        <h2 class="lf ft72" id="weatherCurrTemperature"></h2>
+                        <span class="lf ft30 mgt45">℃</span>
+                    </div>
+                    <div class="lf mgt20 w35">
+                        <div class="cl weather-name">
+                            <h3 class="lf ft20">蒙西</h3>
+                            <img id="weatherIcon" class="lf w30px mgl25" src="images/sunny.svg" alt="">
+                        </div>
+                        <p class="ft20 tl mgt5"><span id="weatherTemperature"></span> <span id="weatherCondition"></span></p>
+                    </div>
+                    <div class="lf mgt20 w35">
+                        <div class="cl weather-name">
+                            <h3 class="lf ft20" id="windGrade"></h3>
+                        </div>
+                        <p class="ft20 tl mgt5">湿度 <span id="humidity"></span></p>
+                    </div>
+                    <!--                        <div class="lf mgt20 w25">
+                                                <div class="cl weather-name">
+                                                    <h3 class="lf ft20">轻度污染</h3>
+                                                </div>
+                                            </div>-->
+                </div>
+                <div class="weather-bottom cl mgt20" id="futureTemp">
+                </div>
+            </div>
+            <div class="lf w40">
+                <div class="title cl">
+                    <h4 class="lf w50">近一年平均气温和空气质量</h4>
+                    <hr class="lf w20">
+                    <div class="lf product">
+                        <div class="lf mgl5">
+                            <span class="small-circle skyBlue"></span>
+                            <span>气温</span>
+                        </div>
+                        <div class="lf mgl5">
+                            <span class="small-circle yellow"></span>
+                            <span>质量</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h250" id="atmosphereLine">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/echarts/echarts.min.js"></script>
+<script src="js/common.js"></script>
+<script>
+    const allFunc = {
+        resData : {
+            "from": 0,
+            "name": "bigScreen.tmp.now",
+            "to":1
+        },
+        resData2 : {
+            "cnds": [
+                {
+                    "field":"statics_time",
+                    "logic":"AND",
+                    "operation":"IN",
+                    "value":""
+                },
+                {
+                    "field":"energy_name",
+                    "logic":"AND",
+                    "operation":"IN",
+                    "value":"('用水量','用电量')"
+                }
+            ],
+            "from": 0,
+            "name": "bigScreen.energy.consumption",
+            "to":50
+        },
+        /*获取当前月份的前12个月的数据*/
+        getTwelveMonth (){
+            let m = [];
+            for (let i=0;i<12;i++){
+                let date = new Date();
+                date.setMonth(date.getMonth()-i,1);
+                let year = date.getFullYear();
+                let month = date.getMonth()+1;
+                month =(month<10 ? "0" + month:month);
+                sDate = "'" + (year.toString() + '-' + month.toString()) + "'";
+                m.push(sDate);
+            }
+            $(".date").text('(' + m[11].replace("'","").replace("'","") + '~' + m[0].replace("'","").replace("'","") + ')')
+            return m
+        },
+        /*获取实时天气的数据*/
+        getNowTmpData (){
+            common.getData("GET",'weather/now',(data)=>{
+                $("#weatherIcon").attr("src","")
+            $("#weatherCondition").text(data.weather);
+            $("#weatherTemperature").text(data.temp_low + '℃~' + data.temp_high + '℃');
+            $("#humidity").text(data.humidity);
+            $("#windGrade").text(data.wind + data.winp);
+            $("#weatherCurrTemperature").text(data.temp_curr);
+        });
+        },
+        /*获取一周天气的数据*/
+        getFutureTmpData (){
+            common.getData("GET",'weather/future',(data)=>{
+                let listTemp = '';
+            for (let item of data) {
+                let imgSrc = 'images' + item.weather_icon.substr(-8).slice(0,-3) + 'svg';
+                listTemp += ` <div class="lf w14 tc">
+                                        <h4 class="ft14 fwn">${item.week}</h4>
+                                        <img class="w20px h20px mgt5" src="${imgSrc}" alt="">
+                                        <p class="ft14">${item.temp_low}℃/${item.temp_high}℃</p>
+                                    </div>`
+            }
+            $("#futureTemp").html(listTemp);
+        });
+        },
+        /*获取近一年平均气温和空气质量*/
+        getHistoryTmpData (){
+            let resData = {};
+            common.deepCopy(this.resData,resData);
+            resData.name = "bigScreen.tmp.history";
+            common.getData("POST",JSON.stringify(resData),(data)=>{
+                let historyList = data.data.data;
+            let averageTemp = [];
+            let averageAirQuality = [];
+            let yearList = [];
+            if (data.code===200){
+                for (let item of historyList){
+                    averageTemp.push(item.avg_tmp);
+                    averageAirQuality.push(item.aqi);
+                    yearList.push(item.year_time.slice(0,4)+'-' + item.year_time.slice(4,6));
+                }
+                this.atmosphereLine(averageTemp.reverse(),averageAirQuality.reverse(),yearList.reverse())
+            }
+        });
+        },
+        /*近一年平均气温和空气质量折线图*/
+        atmosphereLine (m,n,s){
+            const atmosphereLineChart = echarts.init(document.getElementById('atmosphereLine'));
+            const atmosphereLineoption = {
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: s,
+                    axisLine:{
+                        lineStyle:{
+                            color:'#4587AF',
+                            width:1,
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#4587AF']
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                    }
+                },
+                yAxis: [{
+                    type: 'value',
+                    axisLine:{
+                        lineStyle:{
+                            color:'#4587AF',
+                            width:1,
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#4587AF']
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    splitNumber:2
+                },{
+                    type: 'value',
+                    axisLine:{
+                        lineStyle:{
+                            color:'#4587AF',
+                            width:1,
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#4587AF']
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    splitNumber:2
+                }],
+                series: [{
+                    data: m,
+                    type: 'line',
+                    yAxisIndex:0,
+                    itemStyle: {
+                        normal: {
+                            color: '#14C4C6'
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgba(56,157,251,.9)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(56,157,251,.1)'
+                            }])
+                        }
+                    },
+                },{
+                    data: n,
+                    type: 'line',
+                    yAxisIndex:1,
+                    itemStyle: {
+                        normal: {
+                            color: '#FFA900'
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgba(255,192,64,0.9)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(255,192,64,.1)'
+                            }])
+                        }
+                    },
+                }]
+            };
+            atmosphereLineChart.setOption(atmosphereLineoption);
+        },
+    }
+    allFunc.getNowTmpData();
+    allFunc.getHistoryTmpData();
+    allFunc.getFutureTmpData();
+    allFunc.getTwelveMonth()
+</script>
+
+
+</body>
+</html>

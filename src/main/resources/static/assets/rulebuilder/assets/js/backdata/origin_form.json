@@ -1,0 +1,195 @@
+{
+  "form":{
+    "id":"rtrtyrt",
+    "formName":"grtyhrtyr",
+    "viewName":"开始"
+  },
+  "controls":
+  [
+    { 
+    	"title" : "Form Name", 
+    	"fields": {
+        "name" : {
+          "label"   : "新建工单"
+          , "type"  : "input"
+          , "value" : "新建工单"
+        }
+      }
+    },
+    {
+      "title": "Text Input",
+      "fields": {
+        "id": {
+          "label": "ID / Name",
+          "type": "input",
+          "value": "textinput",
+          "hide": true
+        },
+        "label": {
+          "label": "Label 标签",
+          "type": "input",
+          "value": "文本输入框"
+        },
+        "name": {
+          "label": "",
+          "type": "input",
+          "value": "",
+          "hide": true
+        },
+        "paramStr": {
+          "label": "",
+          "type": "input",
+          "value": "",
+          "hide": true
+        },
+        "min": {
+          "label": "最小字符数",
+          "type": "input",
+          "value": "0"
+        },
+        "max": {
+          "label": "最大字符数",
+          "type": "input",
+          "value": "255"
+        },
+        "entityColumn":{
+          "label":"关联实体字段",
+          "type":"select",
+          "value":[
+            {
+              "value": "",
+              "label": " 请选择实体字段",
+              "selected": true
+            }
+          ]
+        },
+        "isEdit":{
+          "label":"是否可编辑",
+          "type":"checkbox",
+          "value": true
+        }
+      }
+    },
+    {
+      "title": "Multiple Radios Inline",
+      "fields": {
+        "id": {
+          "label": "ID / Name",
+          "type": "input",
+          "value": "multipleradiosinline",
+          "hide": true
+        },
+        "label": {
+          "label": "Label 标签",
+          "type": "input",
+          "value": "行内单选按钮"
+        },
+        "name": {
+          "label": "",
+          "type": "input",
+          "value": "",
+          "hide": true
+        },
+        "paramStr": {
+          "label": "",
+          "type": "input",
+          "value": "",
+          "hide":true
+        },
+        "radios": {
+          "label": "Radios",
+          "type": "textarea-split",
+          "value": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "entityColumn":{
+          "label":"关联实体字段",
+          "type":"select",
+          "value":[
+            {
+              "value": "",
+              "label": " 请选择实体字段",
+              "selected": true
+            }
+          ]
+        },
+        "isProcessVariable":{
+          "label":"是否流程变量",
+          "type":"checkbox",
+          "value": false
+        },
+        "datasource":{
+          "label":"数据源",
+          "type":"select",
+          "value":[
+            {
+              "value": "",
+              "label": "请选择数据源",
+              "selected": true,
+              "entityPath":""
+            }
+          ]
+        },
+        "datasourceEntityPath":{
+          "label":"数据源实体全路径名",
+          "type":"input",
+          "value":"",
+          "hide": true
+        },
+        "isEdit":{
+          "label":"是否可编辑",
+          "type":"checkbox",
+          "value": true
+        }
+      }
+    },
+    {
+      "title": "Date Input",
+      "fields": {
+        "id": {
+          "label": "ID / Name",
+          "type": "input",
+          "value": "datetimeinput",
+          "hide": true 
+        },
+        "label": {
+          "label": "Label 标签",
+          "type": "input",
+          "value": "日期时间输入框"
+        },
+        "name": {
+          "label": "",
+          "type": "input",
+          "value": "",
+          "hide": true
+        },
+        "paramStr": {
+          "label": "",
+          "type": "input",
+          "value": "",
+          "hide": true
+        },
+        "entityColumn":{
+          "label":"关联实体字段",
+          "type":"select",
+          "value":[
+            {
+              "value": "",
+              "label": " 请选择实体字段",
+              "selected": true
+            }
+          ]
+        },
+        "isEdit":{
+          "label":"是否可编辑",
+          "type":"checkbox",
+          "value": true
+        }
+      }
+    }
+  ]
+}

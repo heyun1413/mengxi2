@@ -1,0 +1,262 @@
+/* from custom.css of system */
+body.inner-page {
+    background: #eef1f5;
+}
+.ifm-page-content {
+  background: #eef1f5;
+  padding: 25px 20px 10px;
+}
+/* from custom.css of system */
+
+#components {
+  min-height: 500px;
+  position: relative;
+}
+
+#target fieldset {
+  border: 1px solid #ccc;
+  min-height: 200px;
+  padding: 5px;
+  padding-bottom: 30px;
+}
+
+.component,
+.component * {
+  cursor: pointer;
+}
+
+input {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.popover {
+  z-index: 99;
+}
+.popover .control-group {
+  cursor: default;
+}
+
+.popover input {
+  cursor: text;
+}
+.popover input[type=checkbox], 
+.popover input[type=radio] {
+  cursor: pointer;
+}
+
+.temp {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  z-index: 999999;
+  top: 0;
+  overflow-x: hidden;
+  left: 0;
+}
+
+.temp form {
+  padding: 8px 4px;
+  border: 1px dotted #ccc;
+  position: absolute;
+  background: white;
+  box-shadow: 0px 0px 30px #999;
+  -webkit-transition: -webkit-transform 0.1s ease-out;
+  overflow: hidden;
+}
+
+#render{
+  min-height: 500px;
+  font-family: monospace;
+}
+
+/* Popovers now are appended to their parent rather
+than to the body/main document as they once were.
+We need to over-ride some inherited stuff.. */
+form .popover .controls {
+  margin-left: 0;
+}
+
+form .popover .control-label {
+  color: #333;
+  text-align: left;
+}
+
+form .popover form {
+  width: 224px;
+}
+
+.popover-content form .btn{
+  margin-right: 10px
+}
+
+.target:after{
+  float:left;
+  content: " ";
+  height: 77px; 
+  margin-top: 3px;
+  background: #f0f0f0;
+  width: 100%;
+  border: 1px dashed #ccc;
+}
+
+#target, #input, #radioscheckboxes, #select, #buttons {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#target fieldset{
+  width: 100%;
+  overflow: hidden;
+}
+
+.popover-content .form .control-label {
+  margin-bottom: 5px;
+}
+
+.popover .control-group {
+  cursor: default;
+  min-height: 20px;
+  padding-top: 5px;
+  padding-left: 20px;
+}
+
+.component .checkbox-list,
+.component .radio-list {
+  padding-left: 20px;
+}
+
+.nav-tabs {
+  margin-bottom: 20px;
+}
+
+.Wdate {
+  background: #fff url(../img/datePicker.gif) no-repeat right;
+}
+.popover .datasource {
+  overflow: hidden;
+}
+.popover .datasource select {
+  float:left;
+  width: 165px;
+  margin-right: 5px;
+}
+.popover .datasource a.btn {
+  float:left;
+  margin-right: 0;
+}
+
+.iframe-popover {
+  position: fixed;
+  top: 50px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  box-sizing: border-box;
+  padding-top: 40px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  background: #fff;
+  z-index: 120;
+}
+.iframe-popover h2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  font-size: 20px;
+  line-height: 40px;
+  height: 40px;
+  width: 100%;
+  text-indent: 20px;
+  border-bottom: 1px solid #a0a0a0;
+}
+.iframe-popover h2 b.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.iframe-popover .iframe-box {
+  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 10px;  
+}
+.iframe-popover iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.input-append {
+    position: relative;
+}
+.input-append .btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 1px solid #ccc;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+    border-bottom-color: #b3b3b3;    
+}
+[class*=" fa-"]:not(.fa-stack) {
+  line-height: 20px;
+}
+
+.portlet {
+  margin-bottom: 300px;
+}
+
+/* 规则生成器 */
+.component.actived {
+  border: 1px solid #000;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: yellow;
+}
+.ztree li {
+  position: relative;
+}
+
+.ztree .context-menu {
+  position: fixed;
+  border-bottom: 1px solid #555;
+}
+.ztree .context-menu li {
+  position: relative;
+  border: 1px solid #555;
+  border-bottom: none;
+  color: #555;
+  background: white;
+  line-height: 2;
+  padding: 0 5px;
+}
+.ztree .context-menu li:hover {
+  color: #fff;
+  background: #3598dc;
+  cursor: pointer;
+}
+
+.ztree .context-menu li.expandable>.sublist {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  border-bottom: 1px solid #555;
+  padding-left: 0;
+  display: none;
+}
+
+.ztree .context-menu li.expandable:hover>.sublist {
+  display: block;
+}
+
+#customjs textarea.form-control {
+  height: 100px;
+  resize: none;
+}

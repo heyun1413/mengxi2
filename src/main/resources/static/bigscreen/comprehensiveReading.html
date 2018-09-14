@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>综合看板</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .main{
+            width: 1100px;
+            left: 100px;
+        }
+        .bg img:nth-child(2){
+            width: 41px;
+            left: 3%;
+        }
+    </style>
+</head>
+<body>
+<div class="bg">
+    <img src="images/bg.png" alt="">
+    <img src="images/bgRight.png" alt="">
+</div>
+<div class="main">
+    <!--<div class="header tc">
+        <img class="responsive" src="images/headerBg.png" alt="">
+        <h3 class="ft18 mgt-54">综合看板</h3>
+    </div>-->
+    <div class="fourth-background tc mgb30 mgt10">
+        <img class="responsive" src="images/fourthBg.png" alt="">
+        <div class="cl weather top25">
+            <div class="lf w47">
+                <div class="title cl mgt30">
+                    <h4 class="lf w15 ft14">能耗情况</h4>
+                    <hr class="lf w50">
+                    <div class="lf product" id="duntionStere">
+
+                    </div>
+                </div>
+                <div class="cl ft12 mgt20 white">
+                    <p class="lf" style="margin-left: 1%">(万吨)</p>
+                 </div>
+                <div class="h230" id="waterLine">
+
+                </div>
+            </div>
+            <div class="rt w47">
+                <div class="title cl mgt30">
+                    <h4 class="lf w15 ft14">能耗情况</h4>
+                    <hr class="lf w40">
+                    <div class="lf product" id="consumptionStere">
+                        <!--<div class="lf mgl25 mgt-3">-->
+                            <!--<span class="small-circle yellow"></span>-->
+                            <!--<span class="ft14">天然气</span>-->
+                        <!--</div>-->
+                        <!--<div class="lf mgl25 mgt-3">-->
+                            <!--<span class="small-circle blue"></span>-->
+                            <!--<span class="ft14">汽油</span>-->
+                        <!--</div>-->
+                        <!--<div class="lf mgl25 mgt-3">-->
+                            <!--<span class="small-circle violet"></span>-->
+                            <!--<span class="ft14">煤气</span>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div class="cl ft12 mgt20 white">
+                    <p class="lf" style="margin-left: 1%">(万立方)</p>
+                </div>
+                <div class="h230" id="energyConsumptionLine">
+
+                </div>
+            </div>
+        </div>
+        <div class="cl weather top350">
+            <div class="lf w70">
+                <div class="title cl mgt30">
+                    <h4 class="lf w10 ft14">排放情况</h4>
+                    <hr class="lf w63">
+                    <div class="lf product">
+                        <div class="lf mgl15 mgt-3">
+                            <span class="small-circle yellow"></span>
+                            <span class="ft14">废气</span>
+                        </div>
+                        <div class="lf mgl15 mgt-3">
+                            <span class="small-circle skyBlue"></span>
+                            <span class="ft14">污水</span>
+                        </div>
+                        <div class="lf mgl15 mgt-3">
+                            <span class="small-circle red"></span>
+                            <span class="ft14">废渣</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cl ft12 mgt20 white">
+                    <p class="lf" style="margin-left: 1%">(万吨)</p>
+                    <p class="rt" style="margin-right: 3%">(万立方)</p>
+                </div>
+                <div class="h230" id="emissionConditionsLine">
+
+                </div>
+            </div>
+            <div class="lf w20" style="margin-left: 3%">
+                <div class="title cl mgt30">
+                    <h4 class="lf w55 ft14">年安全运行天数</h4>
+                    <hr class="lf w40">
+                    <div class="lf product"></div>
+                </div>
+                <div class="h230 mgt20" id="safeDaysPie">
+
+                </div>
+                <div class="pieTitle lf mgt-140">
+                    <h4 class="ft30" id="days"></h4>
+                    <p>天</p>
+                </div>
+                <p class="tc white ft14"><span id="inspectorNum"></span>名巡检员正在园区巡检</p>
+            </div>
+        </div>
+        <div class="cl weather top660">
+            <div class="cl">
+                <div class="title cl mgt30">
+                    <h4 class="lf w14 ft14">重大危险源巡检情况</h4>
+                    <hr class="lf w68">
+                    <div class="lf product">
+                        <div class="lf mgl25 mgt-3">
+                            <span class="small-circle skyBlue"></span>
+                            <span class="ft14">正常</span>
+                        </div>
+                        <div class="lf mgl25 mgt-3">
+                            <span class="small-circle darkRed"></span>
+                            <span class="ft14">告警、漏检</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cl ft12 mgt5 white">
+                    <p class="lf date"></p>
+                    <p class="rt" style="margin-right: 2%" id="alarmNum"></p>
+                </div>
+                <div class="cl">
+                    <div>
+                        <div class="h250" id="hazardSourceNum">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/echarts/echarts.min.js"></script>
+<script src="js/common.js"></script>
+<script>
+    const allFuc = {
+         obj:{},
+         /*ajax的数据请求格式*/
+         resData : {
+            "cnds": [
+                {
+                    "field":"statics_time",
+                    "logic":"AND",
+                    "operation":"IN",
+                    "value":""
+                },
+                {
+                    "field":"energy_name",
+                    "logic":"AND",
+                    "operation":"IN",
+                    "value":"('用水量','用电量')"
+                }
+            ],
+            "from": 0,
+            "name": "bigScreen.energy.consumption",
+            "to":50
+        },
+        /*获取当前月份的前12个月的数据*/
+        getTwelveMonth (){
+            let m = [];
+            for (let i=0;i<12;i++){
+                let date = new Date();
+                date.setMonth(date.getMonth()-i,1);
+                let year = date.getFullYear();
+                let month = date.getMonth()+1;
+                month =(month<10 ? "0" + month:month);
+                sDate = "'" + (year.toString()+'-'+month.toString()) +"'";
+                m.push(sDate);
+            }
+            $(".date").text('日期：' + m[11].replace("'","").replace("'","") + '~' + m[0].replace("'","").replace("'",""))
+            return m
+        },
+        /*获取能耗情况的数据(单位立方)*/
+        getEnergyConsumptionData (){
+            let resData = {};
+            common.deepCopy(this.resData,resData);
+            let oneYearMonth = this.getTwelveMonth();
+            resData.cnds[0].value =`(${oneYearMonth.join(",")})`;
+            resData.cnds[1].operation = "NOT_IN";
+            resData.cnds[2] = {
+                "field": "unit",
+                "operation": "CONTAIN",
+                "value": "立方"
+            };
+            common.getData("POST",JSON.stringify(resData),(data)=>{
+                if (data.code===200){
+                    let yearList = [];
+                    let mList = [];
+                    let temp = '';
+                    const colorsClass = ['yellow', 'blue', 'violet']
+                    const colors = ['#FFB300', '#389DFB', '#9269D9']
+                    for (let index in data.data.data){
+                        temp += `<div class="lf mgl25 mgt-3">
+                                <span class="small-circle"></span>
+                                <span class="ft14">${Object.keys(data.data.data[index])}</span>
+                            </div>`;
+                        const m1 = {
+                            data: [],
+                            type: 'line',
+                            smooth: true,
+                            symbolSize:0,
+                            yAxisIndex:0,
+                            itemStyle: {
+                                normal: {
+                                    color: colors[index]
+                                }
+                            },
+                        };
+                        let keys = Object.keys(data.data.data[index]);
+                        for (let list of data.data.data[index][keys]){
+                            m1.data.push(Number((list.consumption + list.OFFSET)/10000).toFixed(2));
+                            yearList.push(list.statics_time);
+                        }
+                        mList.push(m1)
+                    }
+
+                    $("#consumptionStere").html(temp)
+                    for (let i=0;i<$("#consumptionStere .small-circle").length;i++) {
+                        $($("#consumptionStere .small-circle")[i]).addClass(colorsClass[i])
+                    }
+                    this.energyConsumptionLine(mList.reverse(), [...new Set(yearList)].reverse());
+                }else {
+                    alert(data.message);
+                }
+            });
+        },
+        /*获取能耗情况的数据(单位吨)*/
+        getEnergyDuntionData (){
+            let resData = {};
+            common.deepCopy(this.resData,resData);
+            let oneYearMonth = this.getTwelveMonth();
+            resData.cnds[0].value =`(${oneYearMonth.join(",")})`;
+            resData.cnds[1].operation = "NOT_IN";
+            resData.cnds[2] = {
+                "field": "unit",
+                "operation": "CONTAIN",
+                "value": "吨"
+            };
+            common.getData("POST",JSON.stringify(resData),(data)=>{
+                if (data.code===200){
+                    let yearList = [];
+                    let mList = [];
+                    let temp = '';
+                    const colorsClass = ['yellow', 'blue', 'violet']
+                    const colors = ['#FFB300', '#389DFB', '#9269D9']
+                    for (let index in data.data.data){
+                        console.log(data.data.data[index])
+                        temp += `<div class="lf mgl25 mgt-3">
+                                <span class="small-circle"></span>
+                                <span class="ft14">${Object.keys(data.data.data[index])}</span>
+                            </div>`;
+                        const m1 = {
+                            data: [],
+                            type: 'line',
+                            smooth: true,
+                            symbolSize:0,
+                            yAxisIndex:0,
+                            itemStyle: {
+                                normal: {
+                                    color: colors[index]
+                                }
+                            },
+                        };
+                        let keys = Object.keys(data.data.data[index]);
+                        for (let list of data.data.data[index][keys]){
+                            m1.data.push(Number((list.consumption + list.OFFSET)/10000).toFixed(2));
+                            yearList.push(list.statics_time);
+                        }
+                        mList.push(m1)
+                    }
+
+                    $("#duntionStere").html(temp)
+                    for (let i=0;i<$("#duntionStere .small-circle").length;i++) {
+                        $($("#duntionStere .small-circle")[i]).addClass(colorsClass[i])
+                    }
+                    console.log(mList.reverse())
+                    this.energyDuntionLine(mList.reverse(), [...new Set(yearList)].reverse());
+                }else {
+                    alert(data.message);
+                }
+            });
+        },
+        /*能耗情况吨的折线图*/
+        energyDuntionLine (m,s) {
+            const energyConsumptionLineChart = echarts.init(document.getElementById('waterLine'));
+            const energyConsumptionLineoption = {
+                grid: {
+                    left: '1%',
+                    right: '3%',
+                    bottom: '1%',
+                    top:'10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: s,
+                    axisLine:{
+                        lineStyle:{
+                            color:'#4587AF',
+                            width:1,
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#4587AF']
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                    }
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLine:{
+                            lineStyle:{
+                                color:'#4587AF',
+                                width:0,
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#4587AF'],
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitNumber:2
+                    },
+                    {
+                        type: 'value',
+                        axisLine:{
+                            lineStyle:{
+                                color:'#4587AF',
+                                width:0,
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#4587AF'],
+                                width:0,
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitNumber:2
+                    },
+                ],
+                series: m
+            };
+            energyConsumptionLineChart.setOption(energyConsumptionLineoption);
+        },
+        /*能耗情况立方的折线图*/
+        energyConsumptionLine (m,s) {
+            const energyConsumptionLineChart = echarts.init(document.getElementById('energyConsumptionLine'));
+            const energyConsumptionLineoption = {
+                grid: {
+                    left: '1%',
+                    right: '3%',
+                    bottom: '1%',
+                    top:'10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: s,
+                    axisLine:{
+                        lineStyle:{
+                            color:'#4587AF',
+                            width:1,
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#4587AF']
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                    }
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLine:{
+                            lineStyle:{
+                                color:'#4587AF',
+                                width:0,
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#4587AF'],
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitNumber:2
+                    },
+                    {
+                        type: 'value',
+                        axisLine:{
+                            lineStyle:{
+                                color:'#4587AF',
+                                width:0,
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#4587AF'],
+                                width:0,
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitNumber:2
+                    },
+                ],
+                series: m
+            };
+            energyConsumptionLineChart.setOption(energyConsumptionLineoption);
+        },
+        /*获取排放情况的数据*/
+        getEmissionConditionsData (){
+            let resData = {};
+            common.deepCopy(this.resData,resData);
+            let oneYearMonth = this.getTwelveMonth();
+            resData.cnds[0].value =`(${oneYearMonth.join(",")})`;
+            resData.cnds.length = 1;
+            resData.name = "bigScreen.emission";
+            common.getData("POST",JSON.stringify(resData),(data)=>{
+                if (data.code===200){
+                    let [wasteWaterList,wasteGasList,wasteResidueList,yearList] = [[],[],[],[]];
+                    for (let item of data.data.data){
+                        if (item.waste_name==='废水'){
+                            wasteWaterList.push(((item.waste_emission + item.offset)/10000).toFixed(2));
+                            yearList.push(item.statics_time);
+                        }else if (item.waste_name==='废气'){
+                            wasteGasList.push(((item.waste_emission + item.offset)/10000).toFixed(2));
+                        }else if (item.waste_name==='废渣'){
+                            wasteResidueList.push(((item.waste_emission + item.offset)/10000).toFixed(2));
+                        }
+                    }
+                    this.emissionConditionLine(wasteWaterList.reverse(),wasteGasList.reverse(),wasteResidueList.reverse(),yearList.reverse());
+                }else {
+                    alert(data.message);
+                }
+            });
+        },
+        /*排放情况的折线图*/
+        emissionConditionLine(m,n,l,s) {
+            const emissionConditionsLineChart = echarts.init(document.getElementById('emissionConditionsLine'));
+            const  emissionConditionoption = {
+                grid: {
+                    left: '1%',
+                    right: '3%',
+                    bottom: '1%',
+                    top:'10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: s,
+                    axisLine:{
+                        lineStyle:{
+                            color:'#4587AF',
+                            width:1,
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#4587AF']
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                    }
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLine:{
+                            lineStyle:{
+                                color:'#4587AF',
+                                width:0,
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#4587AF'],
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitNumber:2
+                    },
+                    {
+                        type: 'value',
+                        axisLine:{
+                            lineStyle:{
+                                color:'#4587AF',
+                                width:0,
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#4587AF'],
+                                width:0,
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitNumber:2
+                    },
+                ],
+                series: [
+                    {
+                        data: m,
+                        type: 'line',
+                        smooth: true,
+                        symbolSize:0,
+                        yAxisIndex:1,
+                        itemStyle: {
+                            normal: {
+                                color: '#FFA900'
+                            }
+                        },
+                    },
+                    {
+                        data:n,
+                        type: 'line',
+                        smooth: true,
+                        symbolSize:0,
+                        yAxisIndex:0,
+                        itemStyle: {
+                            normal: {
+                                color: '#14C4C6'
+                            }
+                        },
+                    },{
+                        data: l,
+                        type: 'line',
+                        smooth: true,
+                        symbolSize:0,
+                        yAxisIndex:0,
+                        itemStyle: {
+                            normal: {
+                                color: '#ED3D30'
+                            }
+                        },
+                    }]
+            };
+            emissionConditionsLineChart.setOption(emissionConditionoption);
+        },
+        /*获取巡检员数量*/
+        getInspectorNum (){
+            let resData = {};
+            common.deepCopy(this.resData,resData);
+            resData.cnds.length = 0;
+            resData.name = "bigScreen.inspectorNum";
+            common.getData("POST",JSON.stringify(resData),(data)=>{
+                if (data.code===200){
+                    let inspectorNum = data.data.data[0].inspectorNum;
+                    $("#inspectorNum").text(inspectorNum);
+                }else {
+                    alert(data.message);
+                }
+            });
+        },
+        /*年运行安全天数饼状图*/
+        safeDaysPie (){
+            /*获取本年的运行天数*/
+            let nowDate =  new Date(); //获取当前时间
+            let yearFisrtDay = nowDate.getFullYear() + '-01-01'; //获取本年的第一天
+            yearFisrtDay = new Date(yearFisrtDay.replace(/-/g, "/"));
+            let time = nowDate.getTime() - yearFisrtDay.getTime();
+            let days = parseInt(time / (1000 * 60 * 60 * 24));
+            $("#days").text(days);
+            /*判断下闰年和平年*/
+            let year = nowDate.getFullYear();
+            let cond1 = year % 4 == 0;  //条件1：年份必须要能被4整除
+            let cond2 = year % 100 != 0;  //条件2：年份不能是整百数
+            let cond3 = year % 400 ==0;  //条件3：年份是400的倍数
+            let cond = cond1 && cond2 || cond3;
+            let yearDays = cond === true?366:365;
+            const safeDaysPieChart = echarts.init(document.getElementById('safeDaysPie'));
+            const safeDaysPieoption = {
+                grid: {
+                    left: '1%',
+                    right: '3%',
+                    bottom: '1%',
+                    top:'10%',
+                    containLabel: true
+                },
+                color:["#00FFFC","#0C60B1"],
+                animation: false,
+                series: [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius: ['70%', '90%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                            },
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:[
+                            {value:days, name:''},
+                            {value:yearDays-days, name:''},
+                        ]
+                    }
+                ]
+
+            };
+            safeDaysPieChart.setOption(safeDaysPieoption);
+        },
+        /*获取各公司的危险源次数数据*/
+        getHazardSourceNumData (){
+            let resData = {};
+            common.deepCopy(this.resData,resData);
+            let oneYearMonth = this.getTwelveMonth();
+            resData.cnds[0].value =`(${oneYearMonth.join(",")})`;
+            resData.cnds.length = 1;
+            resData.to = 20;
+            resData.name = "bigScreen.dangerSource";
+            common.getData("POST",JSON.stringify(resData),(data)=>{
+                if (data.code===200){
+                   let hazardSourceList = data.data.data;
+                   let normalList = [];
+                   let dangerList = [];
+                   let hazardSourceNameList = [];
+                   let alarmNum = 0;
+                   for (let item of hazardSourceList){
+                       if (!item.normal_num){
+                           item.normal_num = 0;
+                       }
+                       if (!item.abnormal_num){
+                           item.abnormal_num = 0;
+                       }
+                       normalList.push(parseInt(item.normal_num + item.offset_normal));
+                       dangerList.push(parseInt(item.abnormal_num + item.offset_abnormal));
+                       hazardSourceNameList.push(item.danger_source_name);
+                       alarmNum += (parseInt(item.normal_num + item.offset_normal) + parseInt(item.abnormal_num + item.offset_abnormal))
+                       console.log(item);
+                   };
+                   $("#alarmNum").text('巡检次数：' + alarmNum)
+                   this.hazardSourceNumLine(normalList,dangerList,[...new Set(hazardSourceNameList)])
+                }else {
+                    alert(data.message);
+                }
+            });
+        },
+        /*获取各公司的危险源次数折线图*/
+        hazardSourceNumLine (m,n,s){
+            let category = s;
+            // let dottedBase = +new Date();
+            let lineData = m;
+            let barData = n;
+
+            /*for (let i = 0; i < 20; i++) {
+                let date = new Date(dottedBase += 3600 * 24 * 1000);
+                category.push([
+                    date.getFullYear(),
+                    date.getMonth() + 1,
+                    date.getDate()
+                ].join('-'));
+                let b = Math.random() * 200;
+                let d = Math.random() * 200;
+                barData.push(b)
+                lineData.push(d + b);
+            }*/
+            const hazardSourceNumLineChart = echarts.init(document.getElementById('hazardSourceNum'));
+            const hazardSourceNumLineoption = {
+                backgroundColor: 'transparent',
+                grid: {
+                    left: '1%',
+                    right: '3%',
+                    bottom: '5%',
+                    top:'10%',
+                    containLabel: true
+                },
+                /*tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },*/
+                /*legend: {
+                    data: ['正常', '异常'],
+                    icon:'circle',
+                    itemWidth: 10,
+                    itemHeight: 10,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },*/
+                xAxis: {
+                    data: category,
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                yAxis: {
+                    splitLine: {show: false},
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                series: [{
+                    name: '正常',
+                    type: 'line',
+                    smooth: true,
+                    showAllSymbol: true,
+                    symbol: 'emptyCircle',
+                    itemStyle:{
+                        normal:{
+                            color: '#67F7F9'
+                        }
+                    },
+                    symbolSize: 10,
+                    data: lineData
+                }, {
+                    name: '异常',
+                    type: 'bar',
+                    barWidth: 10,
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: 5,
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#ED3D30'},
+                                    {offset: 1, color: '#FF7171'}
+                                ]
+                            )
+                        }
+                    },
+                    data: barData
+                }, {
+                    name: 'line',
+                    type: 'bar',
+                    barGap: '-100%',
+                    barWidth: 10,
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: 'rgba(20,200,212,0.5)'},
+                                    {offset: 0.2, color: 'rgba(20,200,212,0.2)'},
+                                    {offset: 1, color: 'rgba(20,200,212,0)'}
+                                ]
+                            )
+                        }
+                    },
+                    z: -12,
+                    data: lineData
+                }, {
+                    name: 'dotted',
+                    type: 'pictorialBar',
+                    symbol: 'rect',
+                    itemStyle: {
+                        normal: {
+                            color: '#0f375f'
+                        }
+                    },
+                    symbolRepeat: true,
+                    symbolSize: [12, 4],
+                    symbolMargin: 1,
+                    z: -10,
+                    data: lineData
+                }]
+            };
+            hazardSourceNumLineChart.setOption(hazardSourceNumLineoption);
+        },
+    };
+    /*页面初始化*/
+    // allFuc.getWaterElectricityData();
+    allFuc.getEnergyConsumptionData();
+    allFuc.getEmissionConditionsData();
+    allFuc.getInspectorNum();
+    allFuc.safeDaysPie();
+    allFuc.getHazardSourceNumData();
+    allFuc.getEnergyDuntionData();
+    // allFuc.hazardSourceNumLine();
+    // var t = setInterval(function () {
+    //     if (allFuc.obj.checkUpList&&allFuc.obj.alarmList&&allFuc.obj.leakDetectionList&&allFuc.obj.yearList) {
+    //         allFuc.hazardSourceLine(allFuc.obj.checkUpList,allFuc.obj.alarmList,allFuc.obj.leakDetectionList,allFuc.obj.yearList)
+    //         clearInterval(t);
+    //     }
+    // }, 300);
+
+</script>
+</body>
+</html>

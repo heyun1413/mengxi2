@@ -1,0 +1,46 @@
+.header{margin:25px 300px}
+/*.bg-img{background: url(../img/loginBg.jpg) no-repeat;height:749px;position: relative;}*/
+.loginBox{position: absolute;top:165px;left:60%;width:450px;padding:0;}
+.loginBox .title{overflow: hidden;width: 100%;}
+.loginBox .form-group label{background:#F3F3F3;width:12%;margin-right:-3px;line-height:38px;text-align:center;border:1px solid #BDBDBD;height:40px;border-right:0;border-top-left-radius:5px;border-bottom-left-radius:5px;}
+.loginBox .form-group{border-radius:5px;margin-bottom:20px;}
+.loginBox .form-group input{box-shadow: inherit!important;width:85%;height:40px;padding:0 10px;border:1px solid #BDBDBD;border-radius:0;display:inline-block;border-top-right-radius:10px;border-bottom-right-radius:10px;}
+.loginBox .title{padding: 30px 0 0;color:#888;text-align:center;border-top-left-radius:10px;border-top-right-radius:10px;background: #fff}
+.loginLogo { font-size: 24px;  }
+.loginBox .section{padding:50px 80px 50px 80px;background:#fff;border-bottom-left-radius:10px;border-bottom-right-radius:10px;}
+.loginBox .form-group .code{width:48%;}
+.loginBox .form-group a.rt{border:1px solid #BDBDBD;padding:8px;border-radius:5px;margin-right:8px;}
+.loginBox .loginControl a{color:#3AB7FE;}
+.loginBox .section .loginBtn,.loginBox .forgetBtn{
+	display:block;width:100%;
+	margin-top:20px;
+	font-size:16px;
+	background: -webkit-linear-gradient(left, #64a9ff , #64bfff); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(right, #64a9ff, #64bfff); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(right, #64a9ff, #64bfff); /* Firefox 3.6 - 15 */
+ 	background: linear-gradient(to right, #64a9ff , #64bfff); 
+ 	box-shadow: 3px 1px 10px rgba(0,0,0,.3)!important;
+    color: #fff;
+} 
+.forgetPassword{text-align: right;display: block;color:#64a9ff;margin-top:40px}
+.forget-form{background: #fff;padding:50px;border-bottom-left-radius:10px;border-bottom-right-radius:10px;}
+.forget-form p{margin: 0 auto;width: 85%;}
+.loginBox .forget-form .form-group input{border-radius: 10px;margin: 20px auto 50px;display: block;}
+.form-actions{overflow: hidden;width: 85%;margin: 40px auto 10px;}
+.forgetBtn,.cancelBtn{width: 40%!important;border-radius:10px;margin:0!important;}
+.footer p{text-align: center;}
+@media only screen and (max-width:1440px) {
+	.loginBox .section{
+		padding: 30px 80px 50px 80px;
+	}
+	.loginBox{
+		width:400px;
+	}
+	.loginBox .title{
+		padding-top: 30px;
+	}
+	.loginLogo img{
+		width:40%;
+	}
+}
+

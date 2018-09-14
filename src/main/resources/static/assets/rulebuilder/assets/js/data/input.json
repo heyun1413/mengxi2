@@ -1,0 +1,279 @@
+[
+  {
+    "title": "Text Input",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "文本输入框"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "minLength": {
+        "label": "最小字符数",
+        "type": "input",
+        "value": "0"
+      },
+      "maxLength": {
+        "label": "最大字符数",
+        "type": "input",
+        "value": "255"
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "dataType": {
+        "label": "验证类型",
+        "type": "select",
+        "value": [
+          {
+            "value": "none",
+            "label": "选择验证类型",
+            "selected": true
+          },
+          {
+            "value": "tel",
+            "label": "固定电话",
+            "selected": false
+          },
+          {
+            "value": "mobile",
+            "label": "手机号码",
+            "selected": false
+          },
+          {
+            "value": "e",
+            "label": "电子邮箱",
+            "selected": false
+          },
+          {
+            "value": "idcard",
+            "label": "身份证号",
+            "selected": false
+          },
+          {
+            "value": "price",
+            "label": "价格",
+            "selected": false
+          },
+          {
+            "value": "zh",
+            "label": "中文",
+            "selected": false
+          },
+          {
+            "value": "money",
+            "label": "货币值",
+            "selected": false
+          },
+          {
+            "value": "ipv4",
+            "label": "ip地址",
+            "selected": false
+          },
+          {
+            "value": "num",
+            "label": "数字",
+            "selected": false
+          },
+          {
+            "value": "age",
+            "label": "年龄",
+            "selected": false
+          }
+        ]
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Search Input",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "jghj",
+        "hide": true
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "搜索框"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": "请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isProcessVariable":{
+        "label":"是否流程变量",
+        "type":"checkbox",
+        "value": false
+      },
+      "datasource":{
+        "label":"数据源",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": "请选择数据源",
+            "selected": true,
+            "entityPath":""
+          }
+        ]
+      },
+      "datasourceEntityPath":{
+        "label":"数据源实体全路径名",
+        "type":"input",
+        "value":"",
+        "hide": true
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Text Area",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "文本域"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "textarea": {
+        "label": "Starting Text",
+        "type": "textarea",
+        "value": "default text"
+      },
+      "minLength": {
+        "label": "最小字符数",
+        "type": "input",
+        "value": "0"
+      },
+      "maxLength": {
+        "label": "最大字符数",
+        "type": "input",
+        "value": "1024"
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  }
+]

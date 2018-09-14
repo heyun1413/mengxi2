@@ -1,0 +1,414 @@
+[
+  {
+    "title": "Input hidden",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "隐藏域"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "File Button",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "文件上传控件"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "button1label": {
+        "label": "按钮1文字",
+        "type": "input",
+        "value": "上传"
+      },
+      "button2label": {
+        "label": "按钮2文字",
+        "type": "input",
+        "value": "清除"
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Image Button",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "图片上传控件"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "button1label": {
+        "label": "按钮1文字",
+        "type": "input",
+        "value": "添加"
+      },
+      "button2label": {
+        "label": "按钮2文字",
+        "type": "input",
+        "value": "清除"
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Date Input",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "日期输入框"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Date Time Input",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": "",
+        "hide": true 
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "日期时间输入框"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Table list",
+    "fields": {
+      "id": {
+        "label": "ID",
+        "type": "input",
+        "value": "",
+        "hide": true 
+      },
+      "title": {
+        "label": "表格名称",
+        "type": "input",
+        "value": "表格名称"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "columns": {
+        "label": "列名",
+        "type": "textarea-split",
+        "value": [
+          "列一",
+          "列二",
+          "列三",
+          "列四"
+        ]
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isProcessVariable":{
+        "label":"是否流程变量",
+        "type":"checkbox",
+        "value": false
+      },
+      "datasource":{
+        "label":"数据源",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": "请选择数据源",
+            "selected": true,
+            "entityPath":""
+          }
+        ]
+      },
+      "datasourceEntityPath":{
+        "label":"数据源实体全路径名",
+        "type":"input",
+        "value":"",
+        "hide": true
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Section title",
+    "fields": {
+      "id": {
+        "label": "ID",
+        "type": "input",
+        "value": "",
+        "hide": true 
+      },
+      "title": {
+        "label": "表单分节标题",
+        "type": "input",
+        "value": "表单分节标题"
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      }
+    }
+  }
+]

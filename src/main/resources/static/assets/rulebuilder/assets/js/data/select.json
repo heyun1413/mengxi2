@@ -1,0 +1,138 @@
+[
+  {
+    "title": "Select Basic",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": ""
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "基本下拉列表"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide":true
+      },
+      "options": {
+        "label": "Options",
+        "type": "textarea-split",
+        "value": [
+          "选项一",
+          "选项二"
+        ]
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isProcessVariable":{
+        "label":"是否流程变量",
+        "type":"checkbox",
+        "value": false
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  },
+  {
+    "title": "Select Multiple",
+    "fields": {
+      "id": {
+        "label": "ID / Name",
+        "type": "input",
+        "value": ""
+      },
+      "label": {
+        "label": "Label 标签",
+        "type": "input",
+        "value": "多行下拉列表"
+      },
+      "name": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide": true
+      },
+      "controlSourceId": {
+        "label": "关联控件",
+        "type": "input",
+        "id": "",
+        "value": "",
+        "hide": true
+      },
+      "paramStr": {
+        "label": "",
+        "type": "input",
+        "value": "",
+        "hide":true
+      },
+      "options": {
+        "label": "Options",
+        "type": "textarea-split",
+        "value": [
+          "选项一",
+          "选项二"
+        ]
+      },
+      "entityColumn":{
+        "label":"关联实体字段",
+        "type":"select",
+        "value":[
+          {
+            "value": "",
+            "label": " 请选择实体字段",
+            "selected": true
+          }
+        ]
+      },
+      "isProcessVariable":{
+        "label":"是否流程变量",
+        "type":"checkbox",
+        "value": false
+      },
+      "isEdit":{
+        "label":"是否可编辑",
+        "type":"checkbox",
+        "value": true
+      },
+      "isNull": {
+        "label": "是否为空",
+        "type":"checkbox",
+        "value":true
+      }
+    }
+  }
+]
