@@ -1,13 +1,21 @@
 package com.zbwb.mengxi.common;
 
+import com.esotericsoftware.reflectasm.FieldAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.google.common.collect.Lists;
+import com.zbwb.mengxi.common.anno.InputType;
 import com.zbwb.mengxi.common.anno.Model;
+import com.zbwb.mengxi.common.anno.Show;
 import com.zbwb.mengxi.common.core.FormField;
 import com.zbwb.mengxi.common.core.IndexPage;
+import com.zbwb.mengxi.common.core.Item;
+import com.zbwb.mengxi.common.system.DataDomain;
+import com.zbwb.mengxi.common.util.DateUtils;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,72 +46,98 @@ public class ModelParser {
         }
     }
 
-    IndexPage getIndexPage(Page<Object> page) {
+    IndexPage getIndexPage(Page<Object> page, Object queryObject) {
         List<MethodAnnotation> methodAnnotations = getMethodAnnotations();
         List<String> headers = methodAnnotations.stream()
-                .filter((e) -> e.name != null)
-                .map((e) -> e.name.value())
+                .filter((e) -> e.show.inList())
+                .map((e) -> e.show.name())
                 .collect(Collectors.toList());
         page.setData(page.getData().stream()
                 .map((e) -> convert(methodAnnotations, e))
                 .collect(Collectors.toList()));
 
-        return new IndexPage(headers, page);
+        return new IndexPage(headers, page, getFormPage(queryObject));
     }
+
+
 
     List<FormField> getFormPage(Object o) {
         return getMethodAnnotations().stream()
-                .filter((e) -> e.formInput != null)
+                .filter((e) -> e.show.inForm())
                 .map((e) -> new FormField(
-                        e.name.value(),
-                        o == null ? null : methodAccess.invoke(o, e.methodName).toString(),
+                        e.show.name(),
+                        getValue(o, e.methodName),
                         StringUtils.uncapitalize(e.methodName.substring(3)),
-                        e.formInput))
+                        InputType.valueOf(e.returnValueType),
+                        false))
                 .collect(Collectors.toList());
     }
+
+    private String getValue(Object o, String methodName) {
+        final Object value = o == null ? null : methodAccess.invoke(o, methodName);
+        if (value == null) {
+            return null;
+        }
+        return value instanceof Date ?
+                DateUtils.format((Date) value):
+                value.toString();
+    }
+
 
     private List<MethodAnnotation> getMethodAnnotations() {
         List<MethodAnnotation> result = Lists.newArrayList();
         for (Method method : clazz.getMethods()) {
-            Model.FormInput formInput = method.getAnnotation(Model.FormInput.class);
-            Model.Name name = method.getAnnotation(Model.Name.class);
-            Model.Show show = method.getAnnotation(Model.Show.class);
-            if (name != null && formInput != null || show != null) {
-                result.add(new MethodAnnotation(formInput, name, show, method.getName()));
+            Show show = method.getAnnotation(Show.class);
+            if (show != null) {
+                result.add(new MethodAnnotation(show, method.getName(), method.getReturnType()));
             }
         }
         return result;
     }
 
     static class MethodAnnotation {
-        final Model.FormInput formInput;
-        final Model.Name name;
-        final Model.Show show;
+        final Show show;
         final String methodName;
+        final Class<?> returnValueType;
 
-        MethodAnnotation(Model.FormInput formInput,
-                         Model.Name name,
-                         Model.Show show,
-                         String methodName) {
-            this.formInput = formInput;
-            this.name = name;
+        MethodAnnotation(Show show,
+                         String methodName,
+                         Class<?> returnValueType) {
             this.show = show;
             this.methodName = methodName;
+            this.returnValueType = returnValueType;
         }
     }
 
-    private List<String> convert(List<MethodAnnotation> methodAnnotations, Object o) {
-        return methodAnnotations.stream().map(
-                (methodAnnotation) ->
-                methodAccess.invoke(o, methodAnnotation.methodName).toString())
+    private Item convert(List<MethodAnnotation> methodAnnotations, Object o) {
+        List<String> streamValues = methodAnnotations.stream()
+                .map(methodAnnotation -> getValue(o, methodAnnotation.methodName))
                 .collect(Collectors.toList());
+        if (o instanceof DataDomain) {
+            return new Item(((DataDomain) o).getId(), streamValues);
+        }
+        throw new AssertionError();
     }
 
     Class<?> getClazz() {
         return clazz;
     }
 
+    boolean isDate(String fieldName) {
+        try {
+            Method method = getClazz().getMethod("get" + StringUtils.capitalize(fieldName));
+            return method.getReturnType() == Date.class;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
+
     public Model getModel() {
         return model;
+    }
+
+
+    public static boolean isModel(Class<?> clazz) {
+        return clazz.getName().contains(BASE_MODEL_PACKAGE);
     }
 }

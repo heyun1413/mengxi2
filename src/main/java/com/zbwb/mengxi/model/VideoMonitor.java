@@ -2,12 +2,13 @@ package com.zbwb.mengxi.model;
 
 
 import com.zbwb.mengxi.common.anno.Model;
+import com.zbwb.mengxi.common.anno.Show;
 import com.zbwb.mengxi.common.system.DataDomain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Table(name = "video_monitor")
@@ -17,18 +18,15 @@ public class VideoMonitor extends DataDomain {
 
     private String monitorUrl;
 
-    @Model.Show
-    @Model.Name("名称")
-    @Model.FormInput
+    @Show(name = "名称")
     @Override
     @Transient
     public String getName() {
         return super.getName();
     }
 
-    @Model.Show
-    @Model.Name("摄像头地址")
-    @Model.FormInput
+
+    @Show(name = "摄像头地址")
     public String getMonitorUrl() {
         return monitorUrl;
     }
@@ -37,10 +35,10 @@ public class VideoMonitor extends DataDomain {
         this.monitorUrl = monitorUrl;
     }
 
-    @Model.Show
-    @Model.Name("创建时间")
+    @Show(name = "创建时间")
     @Transient
-    public String createTime() {
-        return new SimpleDateFormat("yyyy-MM-dd").format(getCreateDate());
+    @Override
+    public Date getCreateDate() {
+        return super.getCreateDate();
     }
 }

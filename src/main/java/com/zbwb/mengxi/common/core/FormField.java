@@ -1,7 +1,6 @@
 package com.zbwb.mengxi.common.core;
 
 import com.zbwb.mengxi.common.anno.InputType;
-import com.zbwb.mengxi.common.anno.Model;
 
 public class FormField {
 
@@ -11,12 +10,14 @@ public class FormField {
     private final InputType inputType;
     private final boolean nullable;
 
-    public FormField(String label, String value, String path, Model.FormInput formInput) {
+
+
+    public FormField(String label, String value, String path, InputType inputType, boolean nullable) {
         this.label = label;
         this.value = value;
         this.path = path;
-        this.inputType = formInput.inputType();
-        this.nullable = formInput.nullable();
+        this.inputType = inputType;
+        this.nullable = nullable;
     }
 
     public String getLabel() {

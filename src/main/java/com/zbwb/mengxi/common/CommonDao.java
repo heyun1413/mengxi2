@@ -33,22 +33,23 @@ public class CommonDao {
     @SuppressWarnings("unchecked")
     public <T> Page<T> find(int pageNo, DetachedCriteria criteria) {
         Page<T> page = new Page<>();
+        page.setPageNo(pageNo);
         final Criteria executableCriteria = criteria.getExecutableCriteria(session());
+        page.setCount((Long) executableCriteria
+                .setProjection(Projections.rowCount())
+                .uniqueResult());
         final List<T> data = executableCriteria
+                .setProjection(null)
                 .setFirstResult((pageNo - 1) * page.getPageSize())
                 .setMaxResults(pageNo * page.getPageSize())
                 .list();
-        page.setCount(count(executableCriteria));
+
         page.setData(data);
         return page;
     }
 
     public Session session() {
         return (Session) entityManager.getDelegate();
-    }
-
-    public long count(Criteria criteria) {
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     public <T> void save(T t) {
