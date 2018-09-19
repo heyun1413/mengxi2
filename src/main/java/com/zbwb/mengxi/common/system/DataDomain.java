@@ -15,17 +15,19 @@ import java.util.UUID;
 public abstract class DataDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	public static final String DEL_FLAG_NORMAL = "0";
+	private static final String DEL_FLAG_NORMAL = "0";
 
 	private String id;
 
-	private String remarks; // 备注
+
 	private User createBy; // 创建者
 	private Date createDate;// 创建日期
 	private User updateBy; // 更新者
 	private Date updateDate;// 更新日期
 	private String delFlag; // 删除标记（0：正常；1：删除；2：审核）
 	private String name; // 名字（标识）
+
+    private String remarks; // 备注
 
 	public DataDomain() {
 		super();
@@ -70,10 +72,8 @@ public abstract class DataDomain implements Serializable {
 		this.remarks = remarks;
 	}
 
-
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@NotFound(action = NotFoundAction.IGNORE)
+	@ManyToOne
+    @JoinColumn(name = "create_by")
 	public User getCreateBy() {
 		return createBy;
 	}
@@ -83,7 +83,6 @@ public abstract class DataDomain implements Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -91,9 +90,9 @@ public abstract class DataDomain implements Serializable {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@NotFound(action = NotFoundAction.IGNORE)
+
+	@ManyToOne
+    @JoinColumn(name = "update_by")
 	public User getUpdateBy() {
 		return updateBy;
 	}

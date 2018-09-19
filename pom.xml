@@ -52,6 +52,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>reflectasm</artifactId>
 			<version>1.11.7</version>

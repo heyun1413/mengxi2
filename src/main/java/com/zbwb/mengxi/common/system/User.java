@@ -1,27 +1,39 @@
 package com.zbwb.mengxi.common.system;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "sys_user")
-public class User implements Serializable {
+public class User {
 
-    private Integer id;
+    private String id = UUID.randomUUID().toString();
     private String username;
     private String password;
+    private String salt;
 
     private String name;
     private String email;
     private String mobile;
     private String token;
 
-    private List<Role> roles;
+    private Set<Role> roles;
 
+    private boolean locked;
+
+    @Id
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Column(unique = true)
     public String getUsername() {
         return username;
     }
@@ -38,13 +50,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    @Id
-    public Integer getId() {
-        return id;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getName() {
@@ -79,12 +90,23 @@ public class User implements Serializable {
         this.token = token;
     }
 
-    @OneToMany(mappedBy = "user")
-    public List<Role> getRoles() {
+    @ManyToMany
+    @JoinTable(name = "sys_user_role",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") })
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

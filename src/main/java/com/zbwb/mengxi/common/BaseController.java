@@ -6,6 +6,7 @@ import com.zbwb.mengxi.common.core.IndexPage;
 import com.zbwb.mengxi.common.core.Operation;
 import com.zbwb.mengxi.common.em.SearchType;
 import com.zbwb.mengxi.common.system.DataDomain;
+import com.zbwb.mengxi.common.system.service.PermissionService;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -17,13 +18,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 
 @Controller
-@RequestMapping("/{modelName}")
+@RequestMapping("/private/{modelName}")
 public abstract class BaseController<T extends DataDomain> {
 
 
@@ -31,12 +34,23 @@ public abstract class BaseController<T extends DataDomain> {
 
     private CommonDao commonDao;
 
+    @Resource
+    private PermissionService permissionService;
+
     private static final ThreadLocal<ModelParser> modelParserThreadLocal = new ThreadLocal<>();
 
 
     @Autowired
     public BaseController(CommonDao commonDao) {
         this.commonDao = commonDao;
+
+    }
+
+    @PostConstruct
+    public void init() {
+        for (String s : ModelParser.getAllPermissionNames()) {
+            permissionService.saveIfNotExist(s);
+        }
     }
 
     @GetMapping

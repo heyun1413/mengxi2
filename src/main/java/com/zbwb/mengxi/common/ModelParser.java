@@ -1,6 +1,5 @@
 package com.zbwb.mengxi.common;
 
-import com.esotericsoftware.reflectasm.FieldAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.google.common.collect.Lists;
 import com.zbwb.mengxi.common.anno.InputType;
@@ -13,10 +12,11 @@ import com.zbwb.mengxi.common.system.DataDomain;
 import com.zbwb.mengxi.common.util.DateUtils;
 import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Field;
+import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.List;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ModelParser {
@@ -130,6 +130,10 @@ public class ModelParser {
         } catch (NoSuchMethodException e) {
             return false;
         }
+    }
+
+    public static List<String> getAllPermissionNames() {
+        return Collections.emptyList();
     }
 
     public Model getModel() {
