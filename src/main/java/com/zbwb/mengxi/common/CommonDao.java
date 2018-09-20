@@ -2,12 +2,8 @@ package com.zbwb.mengxi.common;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -22,7 +18,6 @@ public class CommonDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    protected Logger logger = LoggerFactory.getLogger(getClass());
 
 
 
@@ -54,6 +49,10 @@ public class CommonDao {
 
     public <T> void save(T t) {
         entityManager.persist(t);
+    }
+
+    public <T> void update(T t) {
+        entityManager.refresh(t);
     }
 
     public <T> void save(List<T> group) {

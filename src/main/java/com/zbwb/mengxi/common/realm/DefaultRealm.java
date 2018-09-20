@@ -4,7 +4,10 @@ import com.zbwb.mengxi.common.system.Permission;
 import com.zbwb.mengxi.common.system.Role;
 import com.zbwb.mengxi.common.system.User;
 import com.zbwb.mengxi.common.system.service.UserService;
+import com.zbwb.mengxi.common.util.PasswordHelper;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.credential.Md5CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -21,13 +24,14 @@ public class DefaultRealm extends AuthorizingRealm {
     @Autowired
     public DefaultRealm(UserService userService) {
         this.userService = userService;
+        setCredentialsMatcher(PasswordHelper.getCredentialsMatcher());
     }
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        User userInfo = (User) principals.getPrimaryPrincipal();
-        for (Role role : userInfo.getRoles()) {
+        User user = (User) principals.getPrimaryPrincipal();
+        for (Role role : user.getRoles()) {
             authorizationInfo.addRole(role.getId());
             for (Permission p : role.getPermissions()) {
                 authorizationInfo.addStringPermission(p.getName());
@@ -39,10 +43,9 @@ public class DefaultRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
-
         User user = userService.findByUsername(username);
         if (user == null) {
-            return null;
+            throw new UnknownAccountException();
         }
         if (user.isLocked()) { //账户冻结
             throw new LockedAccountException();

@@ -11,6 +11,7 @@ import java.util.UUID;
 public class Role implements Serializable {
 
     private String id = UUID.randomUUID().toString();
+    private String name;
 
     private Set<Permission> permissions = new HashSet<>();
     private Set<User> users = new HashSet<>();
@@ -22,6 +23,15 @@ public class Role implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Column(unique = true)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @ManyToMany

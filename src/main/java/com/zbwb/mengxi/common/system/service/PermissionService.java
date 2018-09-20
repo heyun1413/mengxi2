@@ -8,28 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class PermissionService {
-
-    private final CommonDao commonDao;
+public interface PermissionService {
 
 
-    @Autowired
-    public PermissionService(CommonDao commonDao) {
-        this.commonDao = commonDao;
-    }
+    Permission create(Permission permission);
 
-    @Transactional
-    public void saveIfNotExist(String permissionName) {
-        final Object dbPermission = commonDao.session()
-                .createCriteria(Permission.class)
-                .add(Restrictions.eq("name", permissionName))
-                .uniqueResult();
-        if (dbPermission != null) return;
-        final Permission permission = new Permission();
-        permission.setName(permissionName);
-        commonDao.save(permission);
-    }
-
+    void deleteById(String permissionId);
 
 }

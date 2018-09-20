@@ -48,9 +48,7 @@ public abstract class BaseController<T extends DataDomain> {
 
     @PostConstruct
     public void init() {
-        for (String s : ModelParser.getAllPermissionNames()) {
-            permissionService.saveIfNotExist(s);
-        }
+
     }
 
     @GetMapping
