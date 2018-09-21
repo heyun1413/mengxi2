@@ -1,4 +1,16 @@
 /* here you can put your own css to customize and override the theme */
+
+.fixed-content {
+    top: 0;
+    bottom:0;
+    position:fixed;
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+.fixed-content::-webkit-scrollbar {
+    display: none;
+}
+
 a,a:hover,a:link,a:visited,a:active {
     text-decoration: none;
 }

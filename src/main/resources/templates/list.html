@@ -21,7 +21,6 @@
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="/assets/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/layout/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/assets/layout/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/webuploader-0.1.5/webuploader.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/webuploader-0.1.5/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css"/>
@@ -45,12 +44,12 @@
 <!--/*@thymesVar id="title" type="java.lang.String"*/-->
 <!--/*@thymesVar id="modelName" type="java.lang.String"*/-->
 <!--/*@thymesVar id="headers" type="java.util.List"*/-->
-<!--/*@thymesVar id="pageData" type="com.zbwb.mengxi.common.Page"*/-->
-<!--/*@thymesVar id="searchFields" type="java.util.List<com.zbwb.mengxi.common.core.FormField>"*/-->
+<!--/*@thymesVar id="pageData" type="com.zbwb.mengxi.common.domain.Page"*/-->
+<!--/*@thymesVar id="searchFields" type="java.util.List<com.zbwb.mengxi.common.domain.FormField>"*/-->
 <!--/*@thymesVar id="queryParams" type="java.lang.String"*/-->
 <!--/*@thymesVar id="listItemOperations" type="java.util.List<String>"*/-->
-<!--/*@thymesVar id="Operation" type="com.zbwb.mengxi.common.core.Operation"*/-->
-<!--/*@thymesVar id="data" type="com.zbwb.mengxi.common.core.Item"*/-->
+<!--/*@thymesVar id="Operation" type="com.zbwb.mengxi.common.em.Operation"*/-->
+<!--/*@thymesVar id="data" type="com.zbwb.mengxi.common.domain.Item"*/-->
 <div class="ifm-page-content">
     <div class="row">
         <div class="col-md-12">
@@ -63,17 +62,17 @@
                     <div class="actions">
                         <a href="javascript:;" class="btn btn-default btn-sm mr15 screen"> <i
                                 class="fa fa-th-large"></i> 筛选 </a>
-                        <a th:href="@{/{modelName}/form/none(modelName=${modelName})}" class="btn btn-default btn-sm"> <i
+                        <a th:href="@{/private/{modelName}/form/none(modelName=${modelName})}" class="btn btn-default btn-sm"> <i
                                 class="fa fa-plus"></i> 新增 </a>
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <form id="form" th:action="@{/{modelName}(modelName=${modelName})}" method="get"
+                    <form id="form" th:action="@{/private/{modelName}(modelName=${modelName})}" method="get"
                           class="form-inline none arrow pdb-20">
                         <input name="pageNo" type="hidden" th:value="${pageData.pageNo}"/>
 
                         <input id="queryParams" name="queryParams" type="hidden" th:value="${queryParams}">
-                        <!--/*@thymesVar id="InputType" type="com.zbwb.mengxi.common.anno.InputType"*/-->
+                        <!--/*@thymesVar id="InputType" type="com.zbwb.mengxi.common.em.InputType"*/-->
                         <div class="form-group" th:each="searchField : ${searchFields}" th:switch="${searchField.getInputType().toString()}">
 
                             <div th:case="NUMBER">
@@ -139,11 +138,11 @@
 
                             <td>
                                 <a th:if="${listItemOperations.contains('DETAIL')}"
-                                   th:href="@{/{modelName}/{id}(modelName=${modelName}, id=${data.id})}">详情</a>
+                                   th:href="@{/private/{modelName}/{id}(modelName=${modelName}, id=${data.id})}">详情</a>
                                 <a th:if="${listItemOperations.contains('EDIT')}"
-                                   th:href="@{/{modelName}/form/{id}(modelName=${modelName}, id=${data.id})}">编辑</a>
+                                   th:href="@{/private/{modelName}/form/{id}(modelName=${modelName}, id=${data.id})}">编辑</a>
                                 <a th:if="${listItemOperations.contains('DELETE')}"
-                                   th:href="@{/{modelName}/{id}(modelName=${modelName}, id=${data.id})}"
+                                   th:href="@{/private/{modelName}/{id}(modelName=${modelName}, id=${data.id})}"
                                    class="delete">删除</a>
                             </td>
                         </tr>

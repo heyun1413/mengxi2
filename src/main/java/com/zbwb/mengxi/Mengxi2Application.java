@@ -1,11 +1,13 @@
 package com.zbwb.mengxi;
 
-import com.zbwb.mengxi.common.realm.DefaultRealm;
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.zbwb.mengxi.common.shiro.DefaultRealm;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,8 @@ import java.util.Map;
 @EnableTransactionManagement
 public class Mengxi2Application {
 
+    public static final String PRIVATE_PATH = "/private";
+
 	public static void main(String[] args) {
 	    SpringApplication.run(Mengxi2Application.class, args);
 	}
@@ -29,7 +33,9 @@ public class Mengxi2Application {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		securityManager.setRealm(defaultRealm);
 		// 自定义session管理 使用redis
-		securityManager.setSessionManager(new DefaultSessionManager());
+		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+		sessionManager.setSessionIdUrlRewritingEnabled(false);
+		securityManager.setSessionManager(sessionManager);
 		// 自定义缓存实现 使用redis
 		securityManager.setCacheManager(new MemoryConstrainedCacheManager());
 		return securityManager;
@@ -50,7 +56,7 @@ public class Mengxi2Application {
 		filterChainDefinitionMap.put("/logout", "logout");
 		// 配置不会被拦截的链接 顺序判断
 		filterChainDefinitionMap.put("/static/**", "anon");
-		filterChainDefinitionMap.put("/private/*", "authc");
+//		filterChainDefinitionMap.put(PRIVATE_PATH + "/*", "authc");
 		//配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
 		shiroFilterFactoryBean.setLoginUrl("/common/login");
 		// 登录成功后要跳转的链接
@@ -61,6 +67,10 @@ public class Mengxi2Application {
 		return shiroFilterFactoryBean;
 	}
 
+	@Bean
+	public ShiroDialect shiroDialect() {
+		return new ShiroDialect();
+	}
 
 
 }

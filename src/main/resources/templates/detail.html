@@ -19,7 +19,6 @@
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="/assets/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/layout/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/assets/layout/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/webuploader-0.1.5/webuploader.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/webuploader-0.1.5/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css"/>
@@ -37,7 +36,7 @@
                 <div class="portlet-body form">
 
                     <div class="form-body">
-                        <!--/*@thymesVar id="formFields" type="java.util.List<com.zbwb.mengxi.common.core.FormField>"*/-->
+                        <!--/*@thymesVar id="formFields" type="java.util.List<com.zbwb.mengxi.common.domain.FormField>"*/-->
                         <div th:each="formField:${formFields}">
                             <label class="col-md-3 control-label">
                                 <span th:text="${formField.label}"></span>

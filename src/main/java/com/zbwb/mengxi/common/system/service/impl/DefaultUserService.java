@@ -1,9 +1,9 @@
 package com.zbwb.mengxi.common.system.service.impl;
 
 import com.zbwb.mengxi.common.CommonDao;
-import com.zbwb.mengxi.common.system.User;
+import com.zbwb.mengxi.common.system.entity.User;
 import com.zbwb.mengxi.common.system.service.UserService;
-import com.zbwb.mengxi.common.util.PasswordHelper;
+import com.zbwb.mengxi.common.shiro.PasswordHelper;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;

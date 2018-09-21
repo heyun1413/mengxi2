@@ -1,15 +1,16 @@
 package com.zbwb.mengxi.common.anno;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Model {
+public @interface ModelParameter {
 
-    String title();
+    String value();
 
-    String name() default "";
+    boolean required() default true;
 }

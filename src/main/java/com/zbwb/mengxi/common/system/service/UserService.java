@@ -1,6 +1,6 @@
 package com.zbwb.mengxi.common.system.service;
 
-import com.zbwb.mengxi.common.system.User;
+import com.zbwb.mengxi.common.system.entity.User;
 
 
 public interface UserService {

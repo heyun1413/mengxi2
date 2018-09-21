@@ -3,7 +3,7 @@ package com.zbwb.mengxi.model;
 
 import com.zbwb.mengxi.common.anno.Model;
 import com.zbwb.mengxi.common.anno.Show;
-import com.zbwb.mengxi.common.system.DataDomain;
+import com.zbwb.mengxi.common.DataDomain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

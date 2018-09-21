@@ -1,6 +1,6 @@
 package com.zbwb.mengxi.common;
 
-import com.zbwb.mengxi.common.system.User;
+import com.zbwb.mengxi.common.system.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.util.StringUtils;
 
+import javax.annotation.Resource;
+
 @Controller
 @RequestMapping("/common")
 public class CommonController {
+
+    @Resource
+    private ModelManager modelManager;
 
     @GetMapping("/login")
     public String toLogin() {
@@ -47,7 +52,8 @@ public class CommonController {
     }
 
     @GetMapping("/index")
-    public String toIndex() {
+    public String toIndex(Model model) {
+        model.addAttribute("menus", modelManager.allMenus());
         return "index";
     }
 }

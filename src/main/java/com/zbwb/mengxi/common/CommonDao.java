@@ -1,5 +1,6 @@
 package com.zbwb.mengxi.common;
 
+import com.zbwb.mengxi.common.domain.Page;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;

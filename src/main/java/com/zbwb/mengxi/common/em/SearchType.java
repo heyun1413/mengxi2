@@ -7,5 +7,14 @@ public enum SearchType {
     LT,
     GE,
     LE,
-    LIKE
+    LIKE;
+
+    public static SearchType get(String condition) {
+        for (SearchType searchType : SearchType.values()) {
+            if (condition.contains(searchType.name())) {
+                return searchType;
+            }
+        }
+        return null;
+    }
 }
