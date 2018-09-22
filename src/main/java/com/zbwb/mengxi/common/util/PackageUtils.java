@@ -9,6 +9,10 @@ import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * @author sharpron
+ * package utils
+ */
 public class PackageUtils {
 
     private static final String FILE_PROTOCOL = "file";
@@ -70,6 +74,11 @@ public class PackageUtils {
         }
     }
 
+    /**
+     * 获取class文件的不包含后缀的名字
+     * @param file class文件
+     * @return className
+     */
     private static String classNameOf(File file) {
         return file.getName().substring(0,
                 file.getName().length() - CLASS_SUFFIX.length());

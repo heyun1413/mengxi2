@@ -1,65 +1,44 @@
 package com.zbwb.mengxi.common;
 
-import com.zbwb.mengxi.common.anno.AuthorizeCheck;
-import com.zbwb.mengxi.common.anno.ModelParameter;
-import com.zbwb.mengxi.common.domain.*;
+import com.zbwb.mengxi.common.domain.FormField;
+import com.zbwb.mengxi.common.domain.IndexPage;
+import com.zbwb.mengxi.common.domain.ModelBean;
+import com.zbwb.mengxi.common.domain.Page;
 import com.zbwb.mengxi.common.em.Operation;
-import com.zbwb.mengxi.common.exception.UnknownEntityException;
-import com.zbwb.mengxi.common.parser.ModelParser;
-import com.zbwb.mengxi.common.system.service.PermissionService;
-import org.hibernate.criterion.Criterion;
+import com.zbwb.mengxi.common.parser.QueryParamParser;
+import com.zbwb.mengxi.common.resolver.ClassResolver;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 
-
+/**
+ * @author sharpron
+ * model控制器
+ */
 @Controller
 @RequestMapping("/private/{modelName}")
-public abstract class BaseController<T extends DataDomain> {
-
-    private static final String PATH_SEPARATOR = ".";
+public class ModelController {
 
 
 
+
+
+    @Resource
     private CommonDao commonDao;
 
     @Resource
     private ModelManager modelManager;
 
     @Resource
-    private RequestMappingHandlerMapping handlerMapping;
+    private QueryParamParser queryParamParser;
 
-    @Resource
-    private PermissionService permissionService;
-
-    @Resource
-    private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
-
-    @Resource
-    private ModelParser modelParser;
-
-
-
-
-    @Autowired
-    public BaseController(CommonDao commonDao) {
-        this.commonDao = commonDao;
-    }
 
     @PostConstruct
     public final void init() {
@@ -78,7 +57,14 @@ public abstract class BaseController<T extends DataDomain> {
         }
     }
 
-//    @AuthorizeCheck("{modelName}:index")
+    /**
+     * 首页
+     * @param model 数据容器
+     * @param modelName 模型名称
+     * @param pageNo 页号
+     * @param queryParams 查询参数
+     * @return 首页
+     */
     @GetMapping
     public String index(
             Model model,
@@ -88,10 +74,8 @@ public abstract class BaseController<T extends DataDomain> {
 
 
         final ModelBean modelBean = modelManager.get(modelName);
-        if (modelBean == null) {
-            throw new RuntimeException("404");
-        }
-        Page<Object> objectPage = commonDao.find(pageNo, parseParam(modelBean.getType(), queryParams));
+        final DetachedCriteria detachedCriteria = CommonDao.detachedCriteria(modelBean.getType(), queryParamParser.parse(queryParams));
+        Page<Object> objectPage = commonDao.find(pageNo, detachedCriteria);
         IndexPage indexPage = modelBean.getIndexPage(objectPage, null);
         model.addAttribute("title", modelBean.getModel().title());
         model.addAttribute("searchFields", indexPage.getSearchField());
@@ -102,40 +86,21 @@ public abstract class BaseController<T extends DataDomain> {
         return "list";
     }
 
-    private static DetachedCriteria parseParam(Class<?> clazz, String queryParams) {
-        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(clazz)
-                .addOrder(Order.desc("createDate"));
-        for (QueryParam queryParam : QueryParam.parseParam(queryParams)) {
-            handleQueryParam(clazz, queryParam, detachedCriteria);
-        }
-        return detachedCriteria;
-    }
-
-    private static void handleQueryParam(Class<?> clazz, QueryParam queryParam,
-                                         DetachedCriteria detachedCriteria) {
-        String path = queryParam.getPath();
-        int splitIndex = path.indexOf(PATH_SEPARATOR);
-        if (splitIndex != -1) {
-            String name = path.substring(0, splitIndex);
-            detachedCriteria.createAlias(name, name);
-            handleQueryParam(clazz, queryParam, detachedCriteria);
-        }
-        else {
-            Criterion byQueryParam = queryParam.getCriterion(clazz);
-            if (byQueryParam != null) {
-                detachedCriteria.add(byQueryParam);
-            }
-        }
-    }
 
 
+
+    /**
+     * 保存实体
+     * @param modelName 模型名称
+     * @param classResolver 自动注入类解析器，将传入的class解析成对象，同时将请求中的数据绑定到该对象上
+     * @return 跳转到该模型对应的首页
+     */
     @PostMapping
-    @Transactional
-    public String add(@PathVariable String modelName,
-                      @ModelParameter("modelName") Object object) {
-        if (!(object instanceof BaseEntity)) {
-            throw new UnknownEntityException();
-        }
+    @Transactional(rollbackFor = Exception.class)
+    public String save(@PathVariable String modelName,
+                      ClassResolver classResolver) {
+
+        Object object = classResolver.resolve(modelManager.get(modelName).getType());
         BaseEntity entity = (BaseEntity) object;
         if (isNone(entity.getId())) {
             entity.setId(null);
@@ -144,10 +109,23 @@ public abstract class BaseController<T extends DataDomain> {
         return "redirect:/private/" + modelName;
     }
 
+    /**
+     * 判断id是否为none值
+     * @param id id
+     * @return 如果是none返回true，否则返回false
+     */
     private boolean isNone(String id) {
         return id.equals("none");
     }
 
+
+    /**
+     * 编辑模型对应的实体
+     * @param modelName 模型名称
+     * @param id 模型对应的实体id
+     * @param model 模型
+     * @return 编辑页面
+     */
     @GetMapping("/form/{id}")
     public String edit(
             @PathVariable String modelName,
@@ -167,6 +145,13 @@ public abstract class BaseController<T extends DataDomain> {
         return "form";
     }
 
+    /**
+     * 查看详情
+     * @param modelName 模型名称
+     * @param id 模型对应的实体id
+     * @param model 模型
+     * @return 详情页面
+     */
     @GetMapping("/{id}")
     public String detail(
             @PathVariable String modelName,
@@ -181,10 +166,15 @@ public abstract class BaseController<T extends DataDomain> {
         return "detail";
     }
 
-
+    /**
+     * 通过id删除模型对应的实体
+     * @param modelName 模型名称
+     * @param id 模型对应的实体id
+     * @return 删除成功返回true， 删除失败返回false
+     */
     @DeleteMapping("/{id}")
     @ResponseBody
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(
             @PathVariable String modelName,
             @PathVariable String id) {

@@ -6,6 +6,10 @@ import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
+/**
+ * @author sharpron
+ * 密码加密处理
+ */
 public class PasswordHelper {
 
     private static final int HASH_ITERATIONS = 2;
@@ -14,6 +18,11 @@ public class PasswordHelper {
     private String salt = randomSalt();
 
 
+    /**
+     * 加密密码
+     * @param password 原始密码
+     * @return 加密后的密码
+     */
     public String encryptPassword(String password) {
         return new SimpleHash(ALGORITHM_NAME,
                 password,
@@ -21,16 +30,28 @@ public class PasswordHelper {
                 HASH_ITERATIONS).toHex();
     }
 
+    /**
+     * 获取加密密码使用的salt
+     * @return salt
+     */
     public String getSalt() {
         return salt;
     }
 
+    /**
+     * 生成随机salt
+     * @return 随机salt
+     */
     private static String randomSalt() {
         return new SecureRandomNumberGenerator()
                 .nextBytes().toHex();
     }
 
-    public static CredentialsMatcher getCredentialsMatcher() {
+    /**
+     * 通过指定的加密方式获取CredentialsMatcher
+     * @return CredentialsMatcher
+     */
+    static CredentialsMatcher getCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashIterations(PasswordHelper.HASH_ITERATIONS);
         hashedCredentialsMatcher.setHashAlgorithmName(ALGORITHM_NAME);

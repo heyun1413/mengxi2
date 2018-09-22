@@ -1,7 +1,6 @@
 package com.zbwb.mengxi;
 
-import com.zbwb.mengxi.common.interceptor.AuthCheckInterceptor;
-import com.zbwb.mengxi.common.resolver.MapArgumentResolver;
+import com.zbwb.mengxi.common.resolver.ClassResolverArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,15 +12,13 @@ import java.util.List;
 @Configuration
 public class MyWebAppConfigurer implements WebMvcConfigurer {
 
-    @Resource
-    private AuthCheckInterceptor authCheckInterceptor;
 
     @Resource
-    private MapArgumentResolver mapArgumentResolver;
+    private ClassResolverArgumentResolver mapArgumentResolver;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authCheckInterceptor).addPathPatterns("/private/*");
+
     }
 
     @Override

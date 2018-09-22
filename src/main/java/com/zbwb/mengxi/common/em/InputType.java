@@ -5,9 +5,41 @@ import com.zbwb.mengxi.common.system.entity.StorageImage;
 
 import java.util.Date;
 
+/**
+ * @author sharpron
+ * 输入类型
+ */
 public enum InputType {
 
-    TEXT, NUMBER, OPTION, DATE, IMAGE, FILE;
+    /**
+     * 文本输入
+     */
+    TEXT,
+
+    /**
+     * 数字输入
+     */
+    NUMBER,
+
+    /**
+     * 选项输入
+     */
+    OPTION,
+
+    /**
+     * 日期输入
+     */
+    DATE,
+
+    /**
+     * 图片输入
+     */
+    IMAGE,
+
+    /**
+     * 文件输入
+     */
+    FILE;
 
     public static InputType valueOf(Class<?> clazz) {
         if (clazz == int.class || clazz == long.class ||
@@ -25,7 +57,7 @@ public enum InputType {
         if (clazz == StorageImage.class) {
             return IMAGE;
         }
-//        if (ModelParser.isModel(clazz)) {
+//        if (ModelUtils.isModel(clazz)) {
 //            return OPTION;
 //        }
         return TEXT;

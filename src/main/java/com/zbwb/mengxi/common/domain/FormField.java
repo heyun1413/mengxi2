@@ -2,12 +2,31 @@ package com.zbwb.mengxi.common.domain;
 
 import com.zbwb.mengxi.common.em.InputType;
 
+/**
+ * @author sharpron
+ * 定义表单字段
+ */
 public class FormField {
 
+    /**
+     * 标签
+     */
     private final String label;
+    /**
+     * 值
+     */
     private final String value;
+    /**
+     * 路径，类似entity.name
+     */
     private final String path;
+    /**
+     * 输入类型
+     */
     private final InputType inputType;
+    /**
+     * 是否可为空
+     */
     private final boolean nullable;
 
 

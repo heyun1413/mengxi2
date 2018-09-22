@@ -13,6 +13,11 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ *
+ * @author sharpron
+ * 默认的realm
+ */
 @Component
 public class DefaultRealm extends AuthorizingRealm {
 
@@ -21,6 +26,7 @@ public class DefaultRealm extends AuthorizingRealm {
     @Autowired
     public DefaultRealm(UserService userService) {
         this.userService = userService;
+        //绑定指定的CredentialsMatcher
         setCredentialsMatcher(PasswordHelper.getCredentialsMatcher());
     }
 
@@ -44,12 +50,12 @@ public class DefaultRealm extends AuthorizingRealm {
         if (user == null) {
             throw new UnknownAccountException();
         }
-        if (user.isLocked()) { //账户冻结
+        if (user.isLocked()) {
             throw new LockedAccountException();
         }
         return new SimpleAuthenticationInfo(
-                user, //用户名
-                user.getPassword(), //密码
+                user,
+                user.getPassword(),
                 ByteSource.Util.bytes(user.getSalt()),
                 getName()
         );

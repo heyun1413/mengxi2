@@ -1,10 +1,11 @@
-package com.zbwb.mengxi.common.parser;
+package com.zbwb.mengxi.common.resolver;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindException;
@@ -17,14 +18,18 @@ import java.beans.ConstructorProperties;
 import java.lang.reflect.Constructor;
 import java.util.Optional;
 
-@Component
-public class ModelParser {
+/**
+ * @author sharpron
+ */
+class ModelUtils {
+
+    private ModelUtils() {}
+
+    private static final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
 
-    private final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
-
-
-    public Object parse(Class<?> clazz,
+    @Nullable
+    static Object parse(Class<?> clazz,
                       String functionName,
                       WebDataBinderFactory binderFactory,
                       NativeWebRequest webRequest) throws Exception {
@@ -47,7 +52,7 @@ public class ModelParser {
     }
 
 
-    private Object constructAttribute(Constructor<?> ctor, String attributeName,
+    private static Object constructAttribute(Constructor<?> ctor, String attributeName,
                                         WebDataBinderFactory binderFactory, NativeWebRequest webRequest) throws Exception {
 
         if (ctor.getParameterCount() == 0) {

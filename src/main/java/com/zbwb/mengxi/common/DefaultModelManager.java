@@ -1,4 +1,4 @@
-package com.zbwb.mengxi.common.parser;
+package com.zbwb.mengxi.common;
 
 import com.google.common.collect.Lists;
 import com.zbwb.mengxi.common.ModelManager;
@@ -7,6 +7,7 @@ import com.zbwb.mengxi.common.anno.Show;
 import com.zbwb.mengxi.common.domain.MethodAnnotation;
 import com.zbwb.mengxi.common.domain.ModelBean;
 import com.zbwb.mengxi.common.exception.DuplicateModelNameException;
+import com.zbwb.mengxi.common.exception.ModelNotFoundException;
 import com.zbwb.mengxi.common.system.dto.Menu;
 import com.zbwb.mengxi.common.util.PackageUtils;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,10 @@ import org.thymeleaf.util.StringUtils;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * @author sharpron
+ *
+ */
 @Component
 public class DefaultModelManager implements ModelManager {
 
@@ -30,7 +35,9 @@ public class DefaultModelManager implements ModelManager {
         Set<Class<?>> classes = PackageUtils.getClasses(packageName);
         for (Class<?> aClass : classes) {
             Model model = aClass.getAnnotation(Model.class);
-            if (model == null) continue;
+            if (model == null) {
+                continue;
+            }
             final String modelName = getModelName(aClass, model);
             if (MODEL_BEAN_MAP.containsKey(modelName)) {
                 throw new DuplicateModelNameException("please use @Model attr name");
@@ -56,7 +63,10 @@ public class DefaultModelManager implements ModelManager {
 
     @Override
     public ModelBean get(String modelName) {
-        return MODEL_BEAN_MAP.get(modelName);
+        if (MODEL_BEAN_MAP.containsKey(modelName)) {
+            return MODEL_BEAN_MAP.get(modelName);
+        }
+        throw new ModelNotFoundException(String.format("%s model not found", modelName));
     }
 
     @Override

@@ -5,6 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author sharpron
+ * 日期工具
+ */
 public class DateUtils {
 
     private static final String PATTERN = "yyyy-MM-dd HH:mm";
@@ -21,6 +25,11 @@ public class DateUtils {
         return newInstance().format(date);
     }
 
+    /**
+     * 按照固定格式将日期字符串转换为date
+     * @param value 日期字符串
+     * @return 日期
+     */
     public static Date parse(String value) {
         try {
             return newInstance().parse(value);

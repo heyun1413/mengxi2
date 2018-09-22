@@ -3,24 +3,37 @@ package com.zbwb.mengxi.common.domain;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.zbwb.mengxi.common.BaseEntity;
-import com.zbwb.mengxi.common.DataDomain;
 import com.zbwb.mengxi.common.anno.Model;
 import com.zbwb.mengxi.common.em.InputType;
 import com.zbwb.mengxi.common.system.entity.Permission;
 import com.zbwb.mengxi.common.util.DateUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author sharpron
+ *
+ * 解析model
+ */
 public class ModelBean {
 
+    /**
+     * 模型信息
+     */
     private final Model model;
+    /**
+     * 方法注解信息
+     */
     private final List<MethodAnnotation> methodAnnotations;
+    /**
+     * 模型类型
+     */
     private final Class<?> type;
+    /**
+     * 方法访问器，执行相关方法获取值
+     */
     private final MethodAccess methodAccess;
 
     public ModelBean(Class<?> type, Model model, List<MethodAnnotation> methodAnnotations) {
@@ -38,11 +51,16 @@ public class ModelBean {
         return model;
     }
 
-
     private List<MethodAnnotation> getMethodAnnotations() {
         return methodAnnotations;
     }
 
+    /**
+     * 获取首页
+     * @param page 数据
+     * @param queryObject 查询对象的值
+     * @return 首页
+     */
     public IndexPage getIndexPage(Page<Object> page, Object queryObject) {
         List<String> headers = methodAnnotations.stream()
                 .filter((e) -> e.show.inList())
@@ -55,6 +73,11 @@ public class ModelBean {
         return new IndexPage(headers, page, getFormPage(queryObject));
     }
 
+    /**
+     * 获取表单页相关信息
+     * @param o 对象
+     * @return 表单字段
+     */
     public List<FormField> getFormPage(Object o) {
         return getMethodAnnotations().stream()
                 .filter((e) -> e.show.inForm())
@@ -67,6 +90,12 @@ public class ModelBean {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 获取值
+     * @param o 对象
+     * @param methodName 方法名
+     * @return 值
+     */
     private String getValue(Object o, String methodName) {
         final Object value = o == null ? null : methodAccess.invoke(o, methodName);
         if (value == null) {
@@ -88,6 +117,25 @@ public class ModelBean {
     }
 
     public List<Permission> getPermissions() {
-        return Arrays.asList(new Permission(String.format("%s:add", type.getSimpleName()), model.title() + "新增"));
+        return Collections.singletonList(new Permission(String.format("%s:add", type.getSimpleName()), model.title() + "新增"));
+    }
+
+    private static class Item {
+
+        private final String id;
+        private final List<String> values;
+
+        public Item(String id, List<String> values) {
+            this.id = id;
+            this.values = values;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public List<String> getValues() {
+            return values;
+        }
     }
 }

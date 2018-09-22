@@ -29,6 +29,7 @@ public class Permission extends BaseEntity {
 
     private Set<Role> roles = new HashSet<>();
 
+    @Override
     @Column(unique = true)
     @Show(name = "权限标识")
     @Transient

@@ -9,19 +9,18 @@ import java.util.List;
 
 /**
  * 分页类
- * @author chengdu dev
- * @version 2017-7-2
+ * @author sharpron
  * @param <T>
  */
 public class Page<T> {
 
 	private static final int DEFAULT_PAGE_SIZE = 10;
 	
-	private int pageNo = 1; // 当前页码
+	private int pageNo = 1;
 
-	private int pageSize = DEFAULT_PAGE_SIZE; // 页面大小，设置为“-1”表示不进行分页（分页无效）
+	private int pageSize = DEFAULT_PAGE_SIZE;
 	
-	private long count;// 总记录数，设置为“-1”表示不查询总数
+	private long count;
 
 	private List<T> data;
 
