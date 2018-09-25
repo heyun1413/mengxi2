@@ -1,8 +1,8 @@
-package com.zbwb.mengxi.common.system.service.impl;
+package com.zbwb.mengxi.module.system.service.impl;
 
 import com.zbwb.mengxi.common.CommonDao;
-import com.zbwb.mengxi.common.system.entity.Role;
-import com.zbwb.mengxi.common.system.service.RoleService;
+import com.zbwb.mengxi.module.system.entity.Role;
+import com.zbwb.mengxi.module.system.service.RoleService;
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Service;
 

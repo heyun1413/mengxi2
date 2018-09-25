@@ -1,4 +1,4 @@
-package com.zbwb.mengxi.common.system.entity;
+package com.zbwb.mengxi.module.system.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

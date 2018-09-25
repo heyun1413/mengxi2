@@ -1,5 +1,7 @@
 package com.zbwb.mengxi.common.util;
 
+import com.zbwb.mengxi.common.anno.Module;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -8,6 +10,7 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * @author sharpron
@@ -20,12 +23,19 @@ public class PackageUtils {
     private static final String CLASS_SUFFIX = ".class";
     private static final String ENC = "UTF-8";
 
+
+    public static Module getModuleFromPackage(String packageName) {
+        Package aPackage = Package.getPackage(packageName);
+        return aPackage.getAnnotation(Module.class);
+    }
+
     /**
      * 获取包下面的所有class
      * @param packageName 包名
+     * @param predicate class是否符合预期的条件
      * @return class的集合
      */
-    public static Set<Class<?>> getClasses(String packageName) {
+    public static Set<Class<?>> getClasses(String packageName, Predicate<Class<?>> predicate) {
         final Set<Class<?>> classes = new LinkedHashSet<>();
         final String packageDirName = packageName.replace(PACKAGE_SEPARATOR, '/');
         try {
@@ -33,7 +43,7 @@ public class PackageUtils {
                     .getResources(packageDirName);
             // 循环迭代下去
             while (dirs.hasMoreElements()) {
-                find(packageName, classes, dirs);
+                find(packageName, classes, dirs, predicate);
             }
         } catch (IOException e) {
             throw new RuntimeException("package is error");
@@ -41,18 +51,18 @@ public class PackageUtils {
         return classes;
     }
 
-    private static void find(String packageName, Set<Class<?>> classes, Enumeration<URL> dirs) throws UnsupportedEncodingException {
+    private static void find(String packageName, Set<Class<?>> classes, Enumeration<URL> dirs, Predicate<Class<?>> predicate) throws UnsupportedEncodingException {
         URL url = dirs.nextElement();
         if (FILE_PROTOCOL.equals(url.getProtocol())) {
             String filePath = URLDecoder.decode(url.getFile(), ENC);
-            findAndAddClassesInPackageByFile(packageName, filePath, true, classes);
+            findAndAddClassesInPackageByFile(packageName, filePath, true, classes, predicate);
         }
     }
 
 
     private static void findAndAddClassesInPackageByFile(
             String packageName, String packagePath,
-            final boolean recursive, Set<Class<?>> classes) {
+            final boolean recursive, Set<Class<?>> classes, Predicate<Class<?>> predicate) {
 
         final File[] files = files(packagePath, recursive);
         if (files == null || files.length == 0) {
@@ -63,10 +73,13 @@ public class PackageUtils {
             if (file.isDirectory()) {
                 findAndAddClassesInPackageByFile(
                         packageName + PACKAGE_SEPARATOR + file.getName(),
-                        file.getAbsolutePath(), recursive, classes);
+                        file.getAbsolutePath(), recursive, classes, predicate);
             } else {
                 try {
-                    classes.add(Class.forName(packageName + PACKAGE_SEPARATOR + classNameOf(file)));
+                    Class<?> aClass = Class.forName(packageName + PACKAGE_SEPARATOR + classNameOf(file));
+                    if (predicate != null && predicate.test(aClass)) {
+                        classes.add(aClass);
+                    }
                 } catch (ClassNotFoundException e) {
                     throw new AssertionError();
                 }

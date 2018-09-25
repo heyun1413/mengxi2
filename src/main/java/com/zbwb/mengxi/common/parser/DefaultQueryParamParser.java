@@ -26,7 +26,7 @@ public class DefaultQueryParamParser implements QueryParamParser {
     }
 
 
-    static List<QueryParam> parseParam(String queryParams) {
+    private static List<QueryParam> parseParam(String queryParams) {
         if (StringUtils.isEmptyOrWhitespace(queryParams)) {
             return Collections.emptyList();
         }

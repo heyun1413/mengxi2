@@ -1,9 +1,7 @@
 package com.zbwb.mengxi.common;
 
-import com.zbwb.mengxi.common.system.entity.User;
+import com.zbwb.mengxi.module.system.entity.User;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 

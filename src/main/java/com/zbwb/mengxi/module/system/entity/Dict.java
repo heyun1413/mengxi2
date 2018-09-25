@@ -1,24 +1,29 @@
-package com.zbwb.mengxi.common.system.entity;
+package com.zbwb.mengxi.module.system.entity;
 
 import com.zbwb.mengxi.common.DataDomain;
+import com.zbwb.mengxi.common.anno.Model;
+import com.zbwb.mengxi.common.anno.Show;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+/**
+ * @author sharpron
+ * 字典类型
+ */
 @Entity
 @Table(name = "sys_dict")
 @DynamicInsert
 @DynamicUpdate
+@Model(title = "字典管理")
 public class Dict extends DataDomain {
 
 
 	private Type type;
 
 
+	@Show(name = "类型")
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	public Type getType() {
@@ -28,4 +33,11 @@ public class Dict extends DataDomain {
 	public void setType(Type type) {
 		this.type = type;
 	}
+
+	@Show(name = "名称")
+    @Transient
+    @Override
+    public String getName() {
+        return super.getName();
+    }
 }

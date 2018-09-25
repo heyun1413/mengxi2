@@ -1,4 +1,4 @@
-package com.zbwb.mengxi.common.system.entity;
+package com.zbwb.mengxi.module.system.entity;
 
 
 import com.zbwb.mengxi.common.DataDomain;
@@ -10,6 +10,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
+/**
+ * @author sharpron
+ * 字典类型
+ */
 @Entity
 @Table(name = "sys_type")
 @DynamicInsert

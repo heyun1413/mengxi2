@@ -1,9 +1,9 @@
-package com.zbwb.mengxi.common.system.service.impl;
+package com.zbwb.mengxi.module.system.service.impl;
 
 
 import com.zbwb.mengxi.common.CommonDao;
-import com.zbwb.mengxi.common.system.entity.Permission;
-import com.zbwb.mengxi.common.system.service.PermissionService;
+import com.zbwb.mengxi.module.system.entity.Permission;
+import com.zbwb.mengxi.module.system.service.PermissionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

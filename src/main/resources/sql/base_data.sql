@@ -10,7 +10,7 @@ INSERT INTO sys_role VALUES ('1', '系统管理员');
 
 INSERT INTO sys_user_role VALUES ('1', '1');
 
-INSERT INTO sys_permission VALUES('1', SYSDATE(), 'com.zbwb.mengxi.model.VideoMonitor:index',
+INSERT INTO sys_permission VALUES('1', SYSDATE(), 'com.zbwb.mengxi.modulee.VideoMonitor:index',
                                 null, SYSDATE(), '视频监控');
 
 INSERT INTO sys_role_permission VALUES('1', '1');

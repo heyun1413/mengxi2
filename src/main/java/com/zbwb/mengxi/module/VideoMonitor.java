@@ -1,4 +1,4 @@
-package com.zbwb.mengxi.model;
+package com.zbwb.mengxi.module;
 
 
 import com.zbwb.mengxi.common.anno.Model;
@@ -10,6 +10,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
 
+/**
+ * @author sharpron
+ * 视频监控
+ */
 @Entity
 @Table(name = "video_monitor")
 @Model(title = "视频监控")

@@ -5,9 +5,10 @@ import com.esotericsoftware.reflectasm.MethodAccess;
 import com.zbwb.mengxi.common.BaseEntity;
 import com.zbwb.mengxi.common.anno.Model;
 import com.zbwb.mengxi.common.em.InputType;
-import com.zbwb.mengxi.common.system.entity.Permission;
+import com.zbwb.mengxi.module.system.entity.Permission;
 import com.zbwb.mengxi.common.util.DateUtils;
 import org.springframework.util.StringUtils;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,6 +20,11 @@ import java.util.stream.Collectors;
  */
 public class ModelBean {
 
+
+    /**
+     * 模型名称
+     */
+    private final String name;
     /**
      * 模型信息
      */
@@ -41,6 +47,13 @@ public class ModelBean {
         this.model = model;
         this.methodAnnotations = new ArrayList<>(methodAnnotations);
         this.methodAccess = MethodAccess.get(this.type);
+        this.name = StringUtils.isEmpty(model.name()) ?
+                StringUtils.uncapitalize(type.getSimpleName()) :
+                model.name();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Class<?> getType() {
@@ -137,5 +150,12 @@ public class ModelBean {
         public List<String> getValues() {
             return values;
         }
+    }
+
+    /**
+     * @return 菜单
+     */
+    public Menu toMenu() {
+        return new Menu(name, model.title());
     }
 }

@@ -1,8 +1,8 @@
-package com.zbwb.mengxi.common.system.service.impl;
+package com.zbwb.mengxi.module.system.service.impl;
 
 import com.zbwb.mengxi.common.CommonDao;
-import com.zbwb.mengxi.common.system.entity.User;
-import com.zbwb.mengxi.common.system.service.UserService;
+import com.zbwb.mengxi.module.system.entity.User;
+import com.zbwb.mengxi.module.system.service.UserService;
 import com.zbwb.mengxi.common.shiro.PasswordHelper;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Restrictions;

@@ -1,9 +1,9 @@
 package com.zbwb.mengxi.common.shiro;
 
-import com.zbwb.mengxi.common.system.entity.Permission;
-import com.zbwb.mengxi.common.system.entity.Role;
-import com.zbwb.mengxi.common.system.entity.User;
-import com.zbwb.mengxi.common.system.service.UserService;
+import com.zbwb.mengxi.module.system.entity.Permission;
+import com.zbwb.mengxi.module.system.entity.Role;
+import com.zbwb.mengxi.module.system.entity.User;
+import com.zbwb.mengxi.module.system.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;

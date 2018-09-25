@@ -62,14 +62,24 @@
 <div class="page-container">
     <div class="page-sidebar-wrapper fixed-content" style="margin-top: 70px;">
         <div class="page-sidebar navbar-collapse collapse" >
-            <ul class="page-sidebar-menu page-header-fixed " data-keep-expanded="false" data-auto-scroll="true"
+
+
+
+
+            <ul class="page-sidebar-menu page-header-fixed "
+                th:include="this::row(${menus}, ${1})"
+                data-keep-expanded="false" data-auto-scroll="true"
                 data-slide-speed="200" style="padding-top: 20px">
-                <!--/*@thymesVar id="menus" type="java.util.List<com.zbwb.mengxi.common.system.dto.Menu>"*/-->
-                <li class="nav-item" th:each="menu:${menus}">
-                    <a th:href="@{/private/{modelName}(modelName=${menu.getModelName()})}" class="nav-link menu">
-                        <span  th:text="${menu.name}"></span>
-                    </a>
-                <li>
+                <!--/*@thymesVar id="menus" type="java.util.List<com.zbwb.mengxi.common.domain.Menu>"*/-->
+                <th:block th:fragment="row(menus,lv)">
+                    <th:block th:each="menu : ${menus}">
+                        <li class="nav-item">
+                            <a th:href="@{/private/{modelName}(modelName=${menu.getModelName()})}"
+                               class="nav-link menu" th:style="|padding-left:${60+15*lv}px|" th:text="${menu.name}">链接</a>
+                        </li>
+                        <th:block th:if="${menu.hasChildren()}" th:include="this::row(${menu.children},${lv+1})"/>
+                    </th:block>
+                </th:block>
             </ul>
         </div>
     </div>

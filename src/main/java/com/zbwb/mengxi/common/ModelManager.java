@@ -1,7 +1,8 @@
 package com.zbwb.mengxi.common;
 
+import com.zbwb.mengxi.common.domain.Menu;
 import com.zbwb.mengxi.common.domain.ModelBean;
-import com.zbwb.mengxi.common.system.dto.Menu;
+import com.zbwb.mengxi.common.domain.ModuleBean;
 
 import java.util.List;
 
@@ -19,14 +20,8 @@ public interface ModelManager {
     ModelBean get(String modelName);
 
     /**
-     * 获取所有模型
-     * @return 所有模型
+     * @return 菜单
      */
-    List<ModelBean> allModel();
+    List<Menu> allMenu();
 
-    /**
-     * 获取所有菜单
-     * @return 所有菜单
-     */
-    List<Menu> allMenus();
 }

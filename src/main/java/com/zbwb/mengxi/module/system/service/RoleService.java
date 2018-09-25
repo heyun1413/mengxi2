@@ -1,6 +1,6 @@
-package com.zbwb.mengxi.common.system.service;
+package com.zbwb.mengxi.module.system.service;
 
-import com.zbwb.mengxi.common.system.entity.Role;
+import com.zbwb.mengxi.module.system.entity.Role;
 
 /**
  * @author ron

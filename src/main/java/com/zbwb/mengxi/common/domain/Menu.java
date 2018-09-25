@@ -1,9 +1,9 @@
-package com.zbwb.mengxi.common.system.dto;
+package com.zbwb.mengxi.common.domain;
 
 import com.google.common.collect.Lists;
-import com.zbwb.mengxi.common.system.entity.Permission;
-import com.zbwb.mengxi.common.system.entity.Role;
-import com.zbwb.mengxi.common.system.entity.User;
+import com.zbwb.mengxi.module.system.entity.Permission;
+import com.zbwb.mengxi.module.system.entity.Role;
+import com.zbwb.mengxi.module.system.entity.User;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,15 +11,11 @@ import java.util.regex.Pattern;
 
 public class Menu {
 
+
     private final String modelName;
     private final String name;
     private final List<Menu> children;
 
-    public Menu(String modelName, String name, List<Menu> children) {
-        this.modelName = modelName;
-        this.name = name;
-        this.children = children;
-    }
 
     public Menu(String modelName, String name) {
         this.modelName = modelName;
@@ -36,7 +32,11 @@ public class Menu {
     }
 
     public List<Menu> getChildren() {
-        return children;
+        return Lists.newArrayList(children);
+    }
+
+    public void addChild(Menu menu) {
+        children.add(menu);
     }
 
     public boolean hasChildren() {

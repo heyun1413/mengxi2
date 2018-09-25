@@ -16,6 +16,11 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+/**
+ * @author sharpron
+ *
+ * 通用dao
+ */
 @Repository
 public class CommonDao {
 
@@ -25,12 +30,23 @@ public class CommonDao {
     private EntityManager entityManager;
 
 
-
-
+    /**
+     * @param clazz clazz
+     * @param id 主键
+     * @param <T> 实体类型
+     * @return 实体
+     */
     public <T> T get(Class<T> clazz, Serializable id) {
         return entityManager.find(clazz, id);
     }
 
+    /**
+     * 分页查询
+     * @param pageNo 页码
+     * @param criteria 查询
+     * @param <T> 实体类型
+     * @return 分页数据
+     */
     @SuppressWarnings("unchecked")
     public <T> Page<T> find(int pageNo, DetachedCriteria criteria) {
         Page<T> page = new Page<>();
@@ -49,38 +65,63 @@ public class CommonDao {
         return page;
     }
 
+    /**
+     * @return session
+     */
     public Session session() {
         return (Session) entityManager.getDelegate();
     }
 
+    /**
+     * 保存实体
+     * @param t 实体
+     * @param <T> 实体类型
+     */
     public <T> void save(T t) {
         entityManager.persist(t);
     }
 
+    /**
+     * 更新实体
+     * @param t 实体
+     * @param <T> 实体类型
+     */
     public <T> void update(T t) {
         entityManager.refresh(t);
     }
 
+    /**
+     * 保存多个实体
+     * @param group 多个实体
+     * @param <T> 实体类型
+     */
     public <T> void save(List<T> group) {
         for (T t : group) {
             save(t);
         }
     }
 
+    /**
+     * 删除实体
+     * @param object 实体对象
+     */
     public void delete(Object object) {
         entityManager.remove(object);
     }
 
+    /**
+     * 清除
+     */
     public void clear() {
         entityManager.clear();
     }
 
-
-    @SuppressWarnings("unchecked")
-    static <T> Class<T> getTClass(Class<?> clazz) {
-        return (Class<T>)((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
-    }
-
+    /**
+     * 动态查询条件
+     * @param clazz 对应的实体class
+     * @param queryParams 查询参数组
+     * @return 组合的动态条件
+     */
     public static DetachedCriteria detachedCriteria(Class<?> clazz, List<QueryParam> queryParams) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(clazz)
                 .addOrder(Order.desc("createDate"));
