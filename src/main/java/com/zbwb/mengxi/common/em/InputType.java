@@ -1,7 +1,7 @@
 package com.zbwb.mengxi.common.em;
 
-import com.zbwb.mengxi.module.system.entity.StorageFile;
-import com.zbwb.mengxi.module.system.entity.StorageImage;
+import com.zbwb.mengxi.common.type.StorageFile;
+import com.zbwb.mengxi.common.type.StorageImage;
 
 import java.util.Date;
 

@@ -6,13 +6,16 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * @author sharpron
@@ -20,6 +23,10 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping("/common")
 public class CommonController {
+
+    private static final String SERVER_IMAGE_ADDRESS = "/upload/image/";
+
+    private static final String SERVER_FILE_ADDRESS = "/upload/file/";
 
     @Resource
     private ModelManager modelManager;
@@ -79,8 +86,53 @@ public class CommonController {
         return "index";
     }
 
-    @GetMapping("/{a:[a-z]+}")
-    public String test(@PathVariable(required = false) String a) {
-        return "index";
+    @PostMapping("/uploadImage")
+    @ResponseBody
+    public String uploadImage(MultipartFile file, HttpServletRequest request) {
+        return upload(SERVER_IMAGE_ADDRESS, file, request);
     }
+
+    @PostMapping("/uploadFile")
+    @ResponseBody
+    public String uploadFile(MultipartFile file, HttpServletRequest request) {
+        return upload(SERVER_FILE_ADDRESS, file, request);
+    }
+
+    public String upload(String prefixPath, MultipartFile file, HttpServletRequest request) {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+        String realPath = request.getServletContext().getRealPath("/");
+        String pathByDate = createPathByDate();
+
+        File path = new File(realPath + prefixPath + pathByDate);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        final String fileName = getFileName(file);
+        File newFile = new File(path.getPath() + File.separator + fileName);
+        try {
+            file.transferTo(newFile);
+        } catch (IOException e) {
+            throw new RuntimeException("upload file failed");
+        }
+        return prefixPath + pathByDate +  fileName;
+    }
+
+    private static String getFileName(MultipartFile multipartFile) {
+        String originalFilename = multipartFile.getOriginalFilename();
+        assert originalFilename != null;
+        int i = originalFilename.lastIndexOf(".");
+        String suffix = originalFilename.substring(i);
+        return UUID.randomUUID().toString() + suffix;
+    }
+
+    private static String createPathByDate() {
+        Calendar instance = Calendar.getInstance();
+        int year = instance.get(Calendar.YEAR);
+        int month = instance.get(Calendar.MONTH) + 1;
+        int day = instance.get(Calendar.DAY_OF_MONTH);
+        return String.format("%d/%02d/%d/", year, month, day);
+    }
+
 }

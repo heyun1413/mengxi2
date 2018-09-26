@@ -121,6 +121,7 @@ public class ModelBean {
 
     private Item convert(Object o) {
         List<String> streamValues = methodAnnotations.stream()
+                .filter(methodAnnotation -> methodAnnotation.show.inList())
                 .map(methodAnnotation -> getValue(o, methodAnnotation.methodName))
                 .collect(Collectors.toList());
         if (o instanceof BaseEntity) {
