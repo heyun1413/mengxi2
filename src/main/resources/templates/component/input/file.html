@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+</head>
+<body>
+    <div th:fragment="handle(formField)" class="file">
+        <!--/*@thymesVar id="formField" type="com.zbwb.mengxi.common.domain.FormField"*/-->
+        <input type="hidden" th:name="${formField.path}+'.uri'" />
+        <div th:id="${formField.path}+'List'" class="uploader-list"></div>
+        <div th:id="${formField.path}+'FilePicker'"></div>
+    </div>
+
+    <div th:fragment="script">
+        <script src="/assets/webuploader-0.1.5/webuploader.js"></script>
+        <script src="/uploader.js"></script>
+        <script>
+            var $file = $('.file');
+            for (var i = 0; i < $file.length; i++) {
+                var filePath = $($file[i]).find('input');
+                var container = $($file[i]).find('div:nth-child(2)');
+                var pickerId = $($file[i]).find('div:nth-child(3)').attr('id');
+                createUploader('#' + pickerId, container, function (path) {
+                    filePath.val(path);
+                }, true)
+            }
+        </script>
+    </div>
+</body>

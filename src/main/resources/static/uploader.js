@@ -1,6 +1,7 @@
 
 
-function createUploader(pick, fileContainer, onUploadSuccess, fileNumLimit) {
+function createUploader(pick, fileContainer, onUploadSuccess, fileNumLimit, isFile) {
+    console.log(isFile ? 'uploadFile' : 'uploadImage');
     var uploader = WebUploader.create({
 
         fileNumLimit: fileNumLimit || 1,
@@ -11,14 +12,14 @@ function createUploader(pick, fileContainer, onUploadSuccess, fileNumLimit) {
         swf: '/assets/webuploader-0.1.5/Uploader.swf',
 
         // 文件接收服务端。
-        server: '/common/uploadImage',
+        server: '/common/' + (isFile ? 'uploadFile' : 'uploadImage'),
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
         pick: pick,
 
         // 只允许选择图片文件。
-        accept: {
+        accept: isFile ? null : {
             title: 'Images',
             extensions: 'gif,jpg,jpeg,bmp,png',
             mimeTypes: 'image/*'

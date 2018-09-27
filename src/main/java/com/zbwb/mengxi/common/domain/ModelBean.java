@@ -1,6 +1,7 @@
 package com.zbwb.mengxi.common.domain;
 
 
+import com.esotericsoftware.reflectasm.FieldAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.zbwb.mengxi.common.BaseEntity;
 import com.zbwb.mengxi.common.anno.Model;
@@ -10,6 +11,8 @@ import com.zbwb.mengxi.common.util.DateUtils;
 import org.springframework.util.StringUtils;
 
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
  */
 public class ModelBean {
 
+    private static final String GETTER_PREFIX = "get";
 
     /**
      * 模型名称
@@ -96,33 +100,86 @@ public class ModelBean {
                 .filter((e) -> e.show.inForm())
                 .map((e) -> new FormField(
                         e.show.name(),
-                        getValue(o, e.methodName),
-                        StringUtils.uncapitalize(e.methodName.substring(3)),
-                        InputType.valueOf(e.returnValueType),
+                        getValue(o, e),
+                        getPath(e),
+                        getType(e),
                         false))
                 .collect(Collectors.toList());
+    }
+
+    private InputType getType(MethodAnnotation annotation) {
+        if (StringUtils.isEmpty(annotation.show.path())) {
+            return InputType.valueOf(annotation.returnValueType);
+        }
+        String tempPath = annotation.show.path();
+        Class<?> clazz = annotation.returnValueType;
+        try {
+            if (!tempPath.contains(".")) {
+                Method method = clazz.getMethod(field2Method(tempPath));
+                clazz = method.getReturnType();
+            }
+            while (tempPath.contains(".")) {
+                final int dotIndex = tempPath.indexOf(".");
+                String firstField = tempPath.substring(0, dotIndex);
+                Method method = clazz.getMethod(field2Method(firstField));
+                clazz = method.getReturnType();
+            }
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        return InputType.valueOf(clazz);
+    }
+
+    private String getPath(MethodAnnotation annotation) {
+        if (StringUtils.isEmpty(annotation.show.path())) {
+            return StringUtils.uncapitalize(annotation.methodName.substring(3));
+        }
+        return annotation.show.path();
     }
 
     /**
      * 获取值
      * @param o 对象
-     * @param methodName 方法名
+     * @param annotation 方法名
      * @return 值
      */
-    private String getValue(Object o, String methodName) {
-        final Object value = o == null ? null : methodAccess.invoke(o, methodName);
-        if (value == null) {
+    private String getValue(final Object o, MethodAnnotation annotation) {
+        Object result = o;
+        String tempPath = annotation.show.path();
+        if (StringUtils.isEmpty(tempPath)) {
+            result = getValueByMethodName(o, annotation.methodName);
+        }
+        else {
+            while (tempPath.contains(".")) {
+                if (result == null) {
+                    return null;
+                }
+                final int dotIndex = tempPath.indexOf(".");
+                String firstField = tempPath.substring(0, dotIndex);
+                tempPath = tempPath.substring(firstField.length());
+                result = getValueByMethodName(o, field2Method(firstField));
+            }
+        }
+        if (result == null) {
             return null;
         }
-        return value instanceof Date ?
-                DateUtils.format((Date) value):
-                value.toString();
+        return result instanceof Date ?
+                DateUtils.format((Date) result):
+                result.toString();
+    }
+
+    private Object getValueByMethodName(Object o, String methodName) {
+        return o == null ? null : MethodAccess.get(o.getClass()).invoke(o, methodName);
+    }
+
+    private String field2Method(String field) {
+        return GETTER_PREFIX + StringUtils.capitalize(field);
     }
 
     private Item convert(Object o) {
         List<String> streamValues = methodAnnotations.stream()
                 .filter(methodAnnotation -> methodAnnotation.show.inList())
-                .map(methodAnnotation -> getValue(o, methodAnnotation.methodName))
+                .map(methodAnnotation -> getValue(o, methodAnnotation))
                 .collect(Collectors.toList());
         if (o instanceof BaseEntity) {
             return new Item(((BaseEntity) o).getId(), streamValues);
@@ -139,7 +196,7 @@ public class ModelBean {
         private final String id;
         private final List<String> values;
 
-        public Item(String id, List<String> values) {
+        Item(String id, List<String> values) {
             this.id = id;
             this.values = values;
         }
@@ -156,7 +213,7 @@ public class ModelBean {
     /**
      * @return 菜单
      */
-    public Menu toMenu() {
+    Menu toMenu() {
         return new Menu(name, model.title());
     }
 }

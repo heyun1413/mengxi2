@@ -3,6 +3,7 @@ package com.zbwb.mengxi.common;
 import com.google.common.collect.Lists;
 import com.zbwb.mengxi.common.anno.Model;
 import com.zbwb.mengxi.common.anno.Show;
+import com.zbwb.mengxi.common.anno.Shows;
 import com.zbwb.mengxi.common.domain.MethodAnnotation;
 import com.zbwb.mengxi.common.domain.ModelBean;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,12 @@ public class ModelParser {
         }
         final List<MethodAnnotation> result = Lists.newArrayList();
         for (Method method : clazz.getMethods()) {
+            Shows shows = method.getAnnotation(Shows.class);
+            if (shows != null) {
+                for (Show show : shows.value()) {
+                    result.add(new MethodAnnotation(show, method.getName(), method.getReturnType()));
+                }
+            }
             Show show = method.getAnnotation(Show.class);
             if (show != null) {
                 result.add(new MethodAnnotation(show, method.getName(), method.getReturnType()));

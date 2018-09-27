@@ -33,11 +33,5 @@ public class MethodAnnotation {
         return show;
     }
 
-    public String getMethodName() {
-        return methodName;
-    }
 
-    public Class<?> getReturnValueType() {
-        return returnValueType;
-    }
 }

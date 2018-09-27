@@ -87,7 +87,7 @@ public class CommonDao {
      * @param <T> 实体类型
      */
     public <T> void update(T t) {
-        entityManager.refresh(t);
+        entityManager.merge(t);
     }
 
     /**

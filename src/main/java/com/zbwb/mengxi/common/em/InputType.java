@@ -1,5 +1,7 @@
 package com.zbwb.mengxi.common.em;
 
+import com.zbwb.mengxi.common.type.Inputable;
+import com.zbwb.mengxi.common.type.Location;
 import com.zbwb.mengxi.common.type.StorageFile;
 import com.zbwb.mengxi.common.type.StorageImage;
 
@@ -9,37 +11,74 @@ import java.util.Date;
  * @author sharpron
  * 输入类型
  */
-public enum InputType {
+public enum InputType implements Inputable {
 
     /**
      * 文本输入
      */
-    TEXT,
+    TEXT {
+        @Override
+        public String getComponentName() {
+            return "text";
+        }
+    },
 
     /**
      * 数字输入
      */
-    NUMBER,
+    NUMBER {
+        @Override
+        public String getComponentName() {
+            return "number";
+        }
+    },
 
     /**
      * 选项输入
      */
-    OPTION,
+    OPTION {
+        @Override
+        public String getComponentName() {
+            return null;
+        }
+    },
 
     /**
      * 日期输入
      */
-    DATE,
+    DATE {
+        @Override
+        public String getComponentName() {
+            return null;
+        }
+    },
 
     /**
      * 图片输入
      */
-    IMAGE,
+    IMAGE {
+        @Override
+        public String getComponentName() {
+            return "image";
+        }
+    },
 
     /**
      * 文件输入
      */
-    FILE;
+    FILE {
+        @Override
+        public String getComponentName() {
+            return "file";
+        }
+    },
+
+    LOCATION {
+        @Override
+        public String getComponentName() {
+            return "location";
+        }
+    };
 
     public static InputType valueOf(Class<?> clazz) {
         if (clazz == int.class || clazz == long.class ||
@@ -56,6 +95,9 @@ public enum InputType {
         }
         if (clazz == StorageImage.class) {
             return IMAGE;
+        }
+        if (clazz == Location.class) {
+            return LOCATION;
         }
 //        if (ModelUtils.isModel(clazz)) {
 //            return OPTION;

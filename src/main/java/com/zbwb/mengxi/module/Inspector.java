@@ -7,6 +7,7 @@ import com.zbwb.mengxi.common.type.StorageFile;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -26,6 +27,14 @@ public class Inspector extends DataDomain {
     private StorageFile storageFile;
 
     private String trainExperience;
+
+
+    @Show(name = "姓名")
+    @Transient
+    @Override
+    public String getName() {
+        return super.getName();
+    }
 
     @Show(name = "登录名称")
     public String getLoginName() {
@@ -63,7 +72,7 @@ public class Inspector extends DataDomain {
         this.phone = phone;
     }
 
-    @Show(name = "所属企业", paths = {"name"})
+    @Show(name = "所属企业", path = "name")
     public Enterprise getEnterprise() {
         return enterprise;
     }

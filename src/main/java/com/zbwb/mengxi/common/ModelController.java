@@ -104,8 +104,11 @@ public class ModelController {
         BaseEntity entity = (BaseEntity) object;
         if (isNone(entity.getId())) {
             entity.setId(null);
+            commonDao.save(object);
         }
-        commonDao.save(object);
+        else {
+            commonDao.update(object);
+        }
         return "redirect:/private/" + modelName;
     }
 

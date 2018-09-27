@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>蒙西管理平台</title>
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" /> -->
     <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -12,17 +10,12 @@
     <link href="/assets/global/plugins/jquery-jbox/2.3/Skins/Bootstrap/jbox.css" rel="stylesheet"/>
     <link href="/assets/global/plugins/jquery-validation/1.11.1/jquery.validate.min.css" type="text/css"
           rel="stylesheet"/>
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="/assets/global/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css"/>
     <link href="/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css"/>
-    <!-- END THEME GLOBAL STYLES -->
-    <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="/assets/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/layout/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/webuploader-0.1.5/webuploader.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/webuploader-0.1.5/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css"/>
-
 </head>
 <body>
 <div class="ifm-page-content">
@@ -43,39 +36,17 @@
                             <!--/*@thymesVar id="formFields" type="java.util.List<com.zbwb.mengxi.common.domain.FormField>"*/-->
                             <div class="form-group" th:each="formField : ${formFields}">
                                 <label class="col-md-3 control-label" th:for="${formField.path}">
-                                    <span class="help-inline" th:if="${!formField.nullable}">
-                                        <font color="red">*</font>
+                                    <span class="help-inline" style="color: red;" th:if="${!formField.nullable}">
+                                        *
                                     </span>
                                     <span th:text="${formField.label}"></span>
                                 </label>
-                                <div class="col-md-4 controls"
-                                     th:switch="${formField.getInputType().toString()}">
-                                    <input th:case="NUMBER"
-                                           th:id="${formField.path}"
-                                           th:name="${formField.path}"
-                                           th:value="${formField.value}"
-                                           type="number"
-                                           class="form-control"/>
-
-                                    <input th:case="TEXT"
-                                           th:id="${formField.path}"
-                                           th:name="${formField.path}"
-                                           th:value="${formField.value}"
-                                           class="form-control"/>
-
-                                    <div th:case="IMAGE" class="col-md-12 image">
-                                        <input type="hidden" th:name="${formField.path}+'.uri'" />
-                                        <div th:id="${formField.path}+'List'" class="uploader-list"></div>
-                                        <div th:id="${formField.path}+'ImagePicker'"></div>
-                                    </div>
-                                </div>
+                                <div class="col-md-4 controls" th:insert="'component/input/'+${formField.getInputType().getComponentName()}::handle(formField=${formField})"></div>
                             </div>
 
                             <div class="form-actions">
-                                <div class="row">
-                                    <div class="col-md-offset-3 col-md-4">
-                                        <input id="btnSubmit" class="btn green" type="submit" value="保存"/>
-                                    </div>
+                                <div class="col-md-offset-3 col-md-4">
+                                    <button class="btn green">保存</button>
                                 </div>
                             </div>
                         </div>
@@ -85,19 +56,11 @@
         </div>
     </div>
 </div>
-<script src="http://libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
-<script src="/assets/webuploader-0.1.5/webuploader.js"></script>
-<script src="/uploader.js"></script>
-<script>
-    var $image = $('.image');
-    for (var i = 0; i < $image.length; i++) {
-        var imagePath = $($image[i]).find('input');
-        var container = $($image[i]).find('div:nth-child(2)');
-        var pickerId = $($image[i]).find('div:nth-child(3)').attr('id');
-        createUploader('#' + pickerId, container, function (path) {
-            imagePath.val(path);
-        })
-    }
-</script>
+
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<div th:replace="component/input/image::script"></div>
+<div th:replace="component/input/file::script"></div>
+<div th:replace="component/input/location::script"></div>
 </body>
 </html>
