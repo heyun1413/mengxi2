@@ -1,29 +1,27 @@
 package com.zbwb.mengxi.common.domain;
 
 
-import com.esotericsoftware.reflectasm.FieldAccess;
-import com.esotericsoftware.reflectasm.MethodAccess;
+import com.google.common.collect.Maps;
 import com.zbwb.mengxi.common.BaseEntity;
+import com.zbwb.mengxi.common.CommonDao;
 import com.zbwb.mengxi.common.anno.Model;
 import com.zbwb.mengxi.common.em.InputType;
+import com.zbwb.mengxi.common.util.ObjectUtils;
 import com.zbwb.mengxi.module.system.entity.Permission;
-import com.zbwb.mengxi.common.util.DateUtils;
 import org.springframework.util.StringUtils;
 
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * @author sharpron
- *
+ * <p>
  * 解析model
  */
 public class ModelBean {
 
-    private static final String GETTER_PREFIX = "get";
 
     /**
      * 模型名称
@@ -34,27 +32,28 @@ public class ModelBean {
      */
     private final Model model;
     /**
-     * 方法注解信息
-     */
-    private final List<MethodAnnotation> methodAnnotations;
-    /**
      * 模型类型
      */
     private final Class<?> type;
-    /**
-     * 方法访问器，执行相关方法获取值
-     */
-    private final MethodAccess methodAccess;
 
-    public ModelBean(Class<?> type, Model model, List<MethodAnnotation> methodAnnotations) {
+    private final List<ShowBean> showBeans;
+
+    private final List<InputBean> inputBeans;
+
+
+    public ModelBean(Class<?> type,
+                     Model model,
+                     List<ShowBean> showBeans,
+                     List<InputBean> inputBeans) {
         this.type = type;
         this.model = model;
-        this.methodAnnotations = new ArrayList<>(methodAnnotations);
-        this.methodAccess = MethodAccess.get(this.type);
         this.name = StringUtils.isEmpty(model.name()) ?
                 StringUtils.uncapitalize(type.getSimpleName()) :
                 model.name();
+        this.showBeans = showBeans;
+        this.inputBeans = inputBeans;
     }
+
 
     public String getName() {
         return name;
@@ -68,21 +67,19 @@ public class ModelBean {
         return model;
     }
 
-    private List<MethodAnnotation> getMethodAnnotations() {
-        return methodAnnotations;
-    }
-
     /**
      * 获取首页
-     * @param page 数据
+     *
+     * @param page        数据
      * @param queryObject 查询对象的值
      * @return 首页
      */
     public IndexPage getIndexPage(Page<Object> page, Object queryObject) {
-        List<String> headers = methodAnnotations.stream()
-                .filter((e) -> e.show.inList())
-                .map((e) -> e.show.name())
+
+        List<String> headers = showBeans.stream()
+                .map(ShowBean::getName)
                 .collect(Collectors.toList());
+
         page.setData(page.getData().stream()
                 .map(this::convert)
                 .collect(Collectors.toList()));
@@ -92,94 +89,33 @@ public class ModelBean {
 
     /**
      * 获取表单页相关信息
+     *
      * @param o 对象
      * @return 表单字段
      */
     public List<FormField> getFormPage(Object o) {
-        return getMethodAnnotations().stream()
-                .filter((e) -> e.show.inForm())
-                .map((e) -> new FormField(
-                        e.show.name(),
-                        getValue(o, e),
-                        getPath(e),
-                        getType(e),
-                        false))
+        return inputBeans.stream()
+                .map(e ->
+                        new FormField(e.getName(), ObjectUtils.getValue(o, e.getPath())
+                                , e.getPath(), e.getType(), false)
+                )
                 .collect(Collectors.toList());
     }
 
-    private InputType getType(MethodAnnotation annotation) {
-        if (StringUtils.isEmpty(annotation.show.path())) {
-            return InputType.valueOf(annotation.returnValueType);
-        }
-        String tempPath = annotation.show.path();
-        Class<?> clazz = annotation.returnValueType;
-        try {
-            if (!tempPath.contains(".")) {
-                Method method = clazz.getMethod(field2Method(tempPath));
-                clazz = method.getReturnType();
-            }
-            while (tempPath.contains(".")) {
-                final int dotIndex = tempPath.indexOf(".");
-                String firstField = tempPath.substring(0, dotIndex);
-                Method method = clazz.getMethod(field2Method(firstField));
-                clazz = method.getReturnType();
-            }
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        return InputType.valueOf(clazz);
-    }
-
-    private String getPath(MethodAnnotation annotation) {
-        if (StringUtils.isEmpty(annotation.show.path())) {
-            return StringUtils.uncapitalize(annotation.methodName.substring(3));
-        }
-        return annotation.show.path();
-    }
-
-    /**
-     * 获取值
-     * @param o 对象
-     * @param annotation 方法名
-     * @return 值
-     */
-    private String getValue(final Object o, MethodAnnotation annotation) {
-        Object result = o;
-        String tempPath = annotation.show.path();
-        if (StringUtils.isEmpty(tempPath)) {
-            result = getValueByMethodName(o, annotation.methodName);
-        }
-        else {
-            while (tempPath.contains(".")) {
-                if (result == null) {
-                    return null;
-                }
-                final int dotIndex = tempPath.indexOf(".");
-                String firstField = tempPath.substring(0, dotIndex);
-                tempPath = tempPath.substring(firstField.length());
-                result = getValueByMethodName(o, field2Method(firstField));
+    public Map<String, List<? extends BaseEntity>> options(CommonDao commonDao) {
+        final Map<String, List<? extends BaseEntity>> map = Maps.newHashMap();
+        for (InputBean inputBean : inputBeans) {
+            if (inputBean.getType() == InputType.OPTION) {
+                List<? extends BaseEntity> all = commonDao.getAll(inputBean.getReturnType());
+                map.put(inputBean.getPath(), all);
             }
         }
-        if (result == null) {
-            return null;
-        }
-        return result instanceof Date ?
-                DateUtils.format((Date) result):
-                result.toString();
-    }
-
-    private Object getValueByMethodName(Object o, String methodName) {
-        return o == null ? null : MethodAccess.get(o.getClass()).invoke(o, methodName);
-    }
-
-    private String field2Method(String field) {
-        return GETTER_PREFIX + StringUtils.capitalize(field);
+        return map;
     }
 
     private Item convert(Object o) {
-        List<String> streamValues = methodAnnotations.stream()
-                .filter(methodAnnotation -> methodAnnotation.show.inList())
-                .map(methodAnnotation -> getValue(o, methodAnnotation))
+        List<String> streamValues = showBeans.stream()
+                .map(e -> ObjectUtils.getValue(o, e.getPath()))
                 .collect(Collectors.toList());
         if (o instanceof BaseEntity) {
             return new Item(((BaseEntity) o).getId(), streamValues);

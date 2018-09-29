@@ -65,6 +65,11 @@ public class CommonDao {
         return page;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getAll(Class<?> clazz) {
+        return (List<T>) session().createCriteria(clazz).list();
+    }
+
     /**
      * @return session
      */

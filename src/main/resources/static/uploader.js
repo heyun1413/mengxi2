@@ -1,7 +1,7 @@
 
 
-function createUploader(pick, fileContainer, onUploadSuccess, fileNumLimit, isFile) {
-    console.log(isFile ? 'uploadFile' : 'uploadImage');
+function createUploader(pick, fileContainer, onUploadSuccess, isFile, fileNumLimit) {
+    console.log(isFile);
     var uploader = WebUploader.create({
 
         fileNumLimit: fileNumLimit || 1,

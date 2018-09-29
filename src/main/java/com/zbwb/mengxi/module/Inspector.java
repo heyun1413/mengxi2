@@ -5,9 +5,7 @@ import com.zbwb.mengxi.common.anno.Model;
 import com.zbwb.mengxi.common.anno.Show;
 import com.zbwb.mengxi.common.type.StorageFile;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 @Entity
 @Table
@@ -73,6 +71,7 @@ public class Inspector extends DataDomain {
     }
 
     @Show(name = "所属企业", path = "name")
+    @ManyToOne
     public Enterprise getEnterprise() {
         return enterprise;
     }

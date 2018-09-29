@@ -24,7 +24,7 @@
                 var pickerId = $($image[i]).find('div:nth-child(3)').attr('id');
                 createUploader('#' + pickerId, container, function (path) {
                     imagePath.val(path);
-                })
+                }, false)
             }
         </script>
     </div>

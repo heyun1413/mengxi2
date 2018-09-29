@@ -1,5 +1,7 @@
 package com.zbwb.mengxi.common.em;
 
+import com.zbwb.mengxi.common.BaseEntity;
+import com.zbwb.mengxi.common.DefaultModelManager;
 import com.zbwb.mengxi.common.type.Inputable;
 import com.zbwb.mengxi.common.type.Location;
 import com.zbwb.mengxi.common.type.StorageFile;
@@ -12,6 +14,13 @@ import java.util.Date;
  * 输入类型
  */
 public enum InputType implements Inputable {
+
+    AUTO {
+        @Override
+        public String getComponentName() {
+            return null;
+        }
+    },
 
     /**
      * 文本输入
@@ -39,7 +48,7 @@ public enum InputType implements Inputable {
     OPTION {
         @Override
         public String getComponentName() {
-            return null;
+            return "option";
         }
     },
 
@@ -87,6 +96,9 @@ public enum InputType implements Inputable {
                 || clazz == Float.class || clazz == Double.class) {
             return NUMBER;
         }
+        if (clazz == String.class) {
+            return TEXT;
+        }
         if (clazz == Date.class) {
             return DATE;
         }
@@ -99,9 +111,13 @@ public enum InputType implements Inputable {
         if (clazz == Location.class) {
             return LOCATION;
         }
+
+        if (DefaultModelManager.contain(clazz)) {
+            return OPTION;
+        }
 //        if (ModelUtils.isModel(clazz)) {
 //            return OPTION;
 //        }
-        return TEXT;
+        throw new AssertionError();
     }
 }

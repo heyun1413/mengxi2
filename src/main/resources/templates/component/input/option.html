@@ -1,0 +1,9 @@
+
+
+
+<div th:fragment="handle(formField)" xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="formField" type="com.zbwb.mengxi.common.domain.FormField"*/-->
+    <select th:id="${formField.path}" class="form-control" th:name="${formField.path}+'.id'">
+        <option th:each="item:${#request.getAttribute(formField.path)}" th:value="${item.id}" th:text="${item.name}"></option>
+    </select>
+</div>

@@ -11,10 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author sharpron
@@ -23,7 +20,7 @@ import java.util.Set;
 @Component
 public class DefaultModelManager implements ModelManager {
 
-    private static final Map<String, ModelBean> MODEL_BEAN_MAP = new HashMap<>();
+    private static final Map<String, ModelBean> MODEL_BEAN_MAP = new LinkedHashMap<>();
 
 
 
@@ -79,4 +76,8 @@ public class DefaultModelManager implements ModelManager {
     }
 
 
+    public static boolean contain(Class<?> clazz) {
+        Collection<ModelBean> values = MODEL_BEAN_MAP.values();
+        return values.stream().map(e -> e.getType()).filter(e -> e != null).findFirst().isPresent();
+    }
 }

@@ -145,6 +145,7 @@ public class ModelController {
         }
         List<FormField> formFields = modelBean.getFormPage(o);
         model.addAttribute("formFields", formFields);
+        model.addAllAttributes(modelBean.options(commonDao));
         return "form";
     }
 
