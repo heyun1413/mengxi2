@@ -3,9 +3,14 @@ package com.zbwb.mengxi.module;
 import com.zbwb.mengxi.common.DataDomain;
 import com.zbwb.mengxi.common.anno.Model;
 import com.zbwb.mengxi.common.anno.Show;
+import com.zbwb.mengxi.common.anno.ShowOverride;
+import com.zbwb.mengxi.common.anno.ShowOverrides;
 import com.zbwb.mengxi.common.type.StorageFile;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -27,14 +32,14 @@ public class Inspector extends DataDomain {
     private String trainExperience;
 
 
-    @Show(name = "姓名")
+    @Show(title = "姓名")
     @Transient
     @Override
     public String getName() {
         return super.getName();
     }
 
-    @Show(name = "登录名称")
+    @Show(title = "登录名称")
     public String getLoginName() {
         return loginName;
     }
@@ -43,7 +48,7 @@ public class Inspector extends DataDomain {
         this.loginName = loginName;
     }
 
-    @Show(name = "密码", inList = false)
+    @Show(title = "密码", atList = false)
     public String getPassword() {
         return password;
     }
@@ -52,7 +57,7 @@ public class Inspector extends DataDomain {
         this.password = password;
     }
 
-    @Show(name = "身份证号", inList = false)
+    @Show(title = "身份证号", atList = false)
     public String getIdCard() {
         return idCard;
     }
@@ -61,7 +66,7 @@ public class Inspector extends DataDomain {
         this.idCard = idCard;
     }
 
-    @Show(name = "电话")
+    @Show(title = "电话")
     public String getPhone() {
         return phone;
     }
@@ -70,7 +75,7 @@ public class Inspector extends DataDomain {
         this.phone = phone;
     }
 
-    @Show(name = "所属企业", path = "name")
+    @ShowOverride(path = "name", show = @Show(title = "所属企业"))
     @ManyToOne
     public Enterprise getEnterprise() {
         return enterprise;
@@ -80,7 +85,7 @@ public class Inspector extends DataDomain {
         this.enterprise = enterprise;
     }
 
-    @Show(name = "资质证书", inList = false)
+    @Show(title = "资质证书", atList = false)
     public StorageFile getStorageFile() {
         return storageFile;
     }
@@ -89,7 +94,7 @@ public class Inspector extends DataDomain {
         this.storageFile = storageFile;
     }
 
-    @Show(name = "培训经历", inList = false)
+    @Show(title = "培训经历", atList = false)
     public String getTrainExperience() {
         return trainExperience;
     }

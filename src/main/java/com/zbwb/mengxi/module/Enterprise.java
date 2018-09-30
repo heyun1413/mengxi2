@@ -31,14 +31,14 @@ public class Enterprise extends DataDomain {
 
     private Location location;
 
-    @Show(name = "企业名称")
+    @Show(title = "企业名称")
     @Override
     @Transient
     public String getName() {
         return super.getName();
     }
 
-    @Show(name = "企业编码")
+    @Show(title = "企业编码")
     public String getCode() {
         return code;
     }
@@ -47,7 +47,7 @@ public class Enterprise extends DataDomain {
         this.code = code;
     }
 
-    @Show(name = "管理员登录账号")
+    @Show(title = "管理员登录账号")
     public String getManagerLoginName() {
         return managerLoginName;
     }
@@ -56,7 +56,7 @@ public class Enterprise extends DataDomain {
         this.managerLoginName = managerLoginName;
     }
 
-    @Show(name = "负责人")
+    @Show(title = "负责人")
     public String getResponsiblePerson() {
         return responsiblePerson;
     }
@@ -65,7 +65,7 @@ public class Enterprise extends DataDomain {
         this.responsiblePerson = responsiblePerson;
     }
 
-    @Show(name = "负责人电话")
+    @Show(title = "负责人电话")
     public String getResponsiblePersonPhone() {
         return responsiblePersonPhone;
     }
@@ -74,7 +74,7 @@ public class Enterprise extends DataDomain {
         this.responsiblePersonPhone = responsiblePersonPhone;
     }
 
-    @Show(name = "企业图标", inList = false)
+    @Show(title = "企业图标", atList = false)
     public StorageImage getLogo() {
         return logo;
     }
@@ -83,7 +83,7 @@ public class Enterprise extends DataDomain {
         this.logo = logo;
     }
 
-    @Show(name = "企业位置", inList = false)
+    @Show(title = "企业位置", atList = false)
     public String getLocationDesc() {
         return locationDesc;
     }
@@ -92,7 +92,7 @@ public class Enterprise extends DataDomain {
         this.locationDesc = locationDesc;
     }
 
-    @Show(name = "经纬度", inList = false)
+    @Show(title = "经纬度", atList = false)
     public Location getLocation() {
         return location;
     }

@@ -10,7 +10,6 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * @author sharpron
@@ -32,10 +31,9 @@ public class PackageUtils {
     /**
      * 获取包下面的所有class
      * @param packageName 包名
-     * @param predicate class是否符合预期的条件
      * @return class的集合
      */
-    public static Set<Class<?>> getClasses(String packageName, Predicate<Class<?>> predicate) {
+    public static Set<Class<?>> getClasses(String packageName) {
         final Set<Class<?>> classes = new LinkedHashSet<>();
         final String packageDirName = packageName.replace(PACKAGE_SEPARATOR, '/');
         try {
@@ -43,7 +41,7 @@ public class PackageUtils {
                     .getResources(packageDirName);
             // 循环迭代下去
             while (dirs.hasMoreElements()) {
-                find(packageName, classes, dirs, predicate);
+                find(packageName, classes, dirs);
             }
         } catch (IOException e) {
             throw new RuntimeException("package is error");
@@ -51,18 +49,19 @@ public class PackageUtils {
         return classes;
     }
 
-    private static void find(String packageName, Set<Class<?>> classes, Enumeration<URL> dirs, Predicate<Class<?>> predicate) throws UnsupportedEncodingException {
+    private static void find(String packageName, Set<Class<?>> classes, Enumeration<URL> dirs)
+            throws UnsupportedEncodingException {
         URL url = dirs.nextElement();
         if (FILE_PROTOCOL.equals(url.getProtocol())) {
             String filePath = URLDecoder.decode(url.getFile(), ENC);
-            findAndAddClassesInPackageByFile(packageName, filePath, true, classes, predicate);
+            findAndAddClassesInPackageByFile(packageName, filePath, true, classes);
         }
     }
 
 
     private static void findAndAddClassesInPackageByFile(
             String packageName, String packagePath,
-            final boolean recursive, Set<Class<?>> classes, Predicate<Class<?>> predicate) {
+            final boolean recursive, Set<Class<?>> classes) {
 
         final File[] files = files(packagePath, recursive);
         if (files == null || files.length == 0) {
@@ -73,13 +72,11 @@ public class PackageUtils {
             if (file.isDirectory()) {
                 findAndAddClassesInPackageByFile(
                         packageName + PACKAGE_SEPARATOR + file.getName(),
-                        file.getAbsolutePath(), recursive, classes, predicate);
+                        file.getAbsolutePath(), recursive, classes);
             } else {
                 try {
                     Class<?> aClass = Class.forName(packageName + PACKAGE_SEPARATOR + classNameOf(file));
-                    if (predicate != null && predicate.test(aClass)) {
-                        classes.add(aClass);
-                    }
+                    classes.add(aClass);
                 } catch (ClassNotFoundException e) {
                     throw new AssertionError();
                 }

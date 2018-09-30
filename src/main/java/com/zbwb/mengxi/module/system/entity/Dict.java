@@ -23,7 +23,7 @@ public class Dict extends DataDomain {
 	private Type type;
 
 
-	@Show(name = "类型")
+	@Show(title = "类型")
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	public Type getType() {
@@ -34,7 +34,7 @@ public class Dict extends DataDomain {
 		this.type = type;
 	}
 
-	@Show(name = "名称")
+	@Show(title = "名称")
     @Transient
     @Override
     public String getName() {

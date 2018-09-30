@@ -32,14 +32,14 @@ public class Permission extends BaseEntity {
 
     @Override
     @Column(unique = true)
-    @Show(name = "权限标识")
+    @Show(title = "权限标识")
     @Transient
     public String getName() {
         return super.getName();
     }
 
 
-    @Show(name = "权限描述")
+    @Show(title = "权限描述")
     public String getDescription() {
         return description;
     }

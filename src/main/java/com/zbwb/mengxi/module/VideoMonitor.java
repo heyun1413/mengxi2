@@ -22,7 +22,7 @@ public class VideoMonitor extends DataDomain {
 
     private String monitorUrl;
 
-    @Show(name = "名称")
+    @Show(title = "名称")
     @Override
     @Transient
     public String getName() {
@@ -30,7 +30,7 @@ public class VideoMonitor extends DataDomain {
     }
 
 
-    @Show(name = "摄像头地址")
+    @Show(title = "摄像头地址")
     public String getMonitorUrl() {
         return monitorUrl;
     }
@@ -39,7 +39,7 @@ public class VideoMonitor extends DataDomain {
         this.monitorUrl = monitorUrl;
     }
 
-    @Show(name = "创建时间")
+    @Show(title = "创建时间")
     @Transient
     @Override
     public Date getCreateDate() {

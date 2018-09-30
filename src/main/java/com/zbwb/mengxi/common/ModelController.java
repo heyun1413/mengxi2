@@ -2,9 +2,9 @@ package com.zbwb.mengxi.common;
 
 import com.zbwb.mengxi.common.domain.FormField;
 import com.zbwb.mengxi.common.domain.IndexPage;
-import com.zbwb.mengxi.common.domain.ModelBean;
 import com.zbwb.mengxi.common.domain.Page;
 import com.zbwb.mengxi.common.em.Operation;
+import com.zbwb.mengxi.common.model.ModelBean;
 import com.zbwb.mengxi.common.parser.QueryParamParser;
 import com.zbwb.mengxi.common.resolver.ClassResolver;
 import org.hibernate.criterion.DetachedCriteria;
@@ -77,7 +77,7 @@ public class ModelController {
         final DetachedCriteria detachedCriteria = CommonDao.detachedCriteria(modelBean.getType(), queryParamParser.parse(queryParams));
         Page<Object> objectPage = commonDao.find(pageNo, detachedCriteria);
         IndexPage indexPage = modelBean.getIndexPage(objectPage, null);
-        model.addAttribute("title", modelBean.getModel().title());
+        model.addAttribute("title", modelBean.getTitle());
         model.addAttribute("searchFields", indexPage.getSearchField());
         model.addAttribute("pageData", indexPage.getPage());
         model.addAttribute("headers", indexPage.getHeaders());
@@ -140,12 +140,12 @@ public class ModelController {
         Object o = null;
         if (!isNone(id)) {
             o = commonDao.get(modelBean.getType(), id);
-            model.addAttribute("title", modelBean.getModel().title());
+            model.addAttribute("title", modelBean.getTitle());
             model.addAttribute("data", o);
         }
         List<FormField> formFields = modelBean.getFormPage(o);
         model.addAttribute("formFields", formFields);
-        model.addAllAttributes(modelBean.options(commonDao));
+        model.addAllAttributes(modelBean.getOptions(commonDao));
         return "form";
     }
 
@@ -164,7 +164,7 @@ public class ModelController {
 
         ModelBean modelBean = modelManager.get(modelName);
         Object o = commonDao.get(modelBean.getType(), id);
-        model.addAttribute("title", modelBean.getModel().title());
+        model.addAttribute("title", modelBean.getTitle());
         List<FormField> formFields = modelBean.getFormPage(o);
         model.addAttribute("formFields", formFields);
         return "detail";

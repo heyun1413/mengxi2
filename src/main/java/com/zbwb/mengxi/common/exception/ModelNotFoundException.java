@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class ModelNotFoundException extends RuntimeException {
 
+    public ModelNotFoundException() {
+        super();
+    }
+
     public ModelNotFoundException(String message) {
         super(message);
     }

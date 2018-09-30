@@ -2,14 +2,13 @@ package com.zbwb.mengxi.common;
 
 import com.google.common.collect.Maps;
 import com.zbwb.mengxi.common.anno.Module;
-import com.zbwb.mengxi.common.domain.ModelBean;
 import com.zbwb.mengxi.common.domain.ModuleBean;
+import com.zbwb.mengxi.common.model.ModelBean;
 import com.zbwb.mengxi.common.util.PackageUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author sharpron

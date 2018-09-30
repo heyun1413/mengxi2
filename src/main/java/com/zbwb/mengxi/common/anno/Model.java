@@ -23,4 +23,5 @@ public @interface Model {
      * @return 名字，默认是类的首字母小写，避免同名冲突
      */
     String name() default "";
+
 }

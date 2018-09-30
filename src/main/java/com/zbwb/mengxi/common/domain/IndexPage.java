@@ -23,7 +23,7 @@ public class IndexPage {
      */
     private final List<FormField> searchField;
 
-    IndexPage(List<String> headers, Page<Object> page, List<FormField> searchField) {
+    public IndexPage(List<String> headers, Page<Object> page, List<FormField> searchField) {
         this.headers = headers;
         this.page = page;
         this.searchField = searchField;

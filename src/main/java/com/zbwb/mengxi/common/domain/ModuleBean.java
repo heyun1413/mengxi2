@@ -1,6 +1,7 @@
 package com.zbwb.mengxi.common.domain;
 
 import com.google.common.collect.Lists;
+import com.zbwb.mengxi.common.model.ModelBean;
 
 import java.util.List;
 

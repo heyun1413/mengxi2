@@ -1,7 +1,5 @@
 package com.zbwb.mengxi.common.em;
 
-import com.zbwb.mengxi.common.BaseEntity;
-import com.zbwb.mengxi.common.DefaultModelManager;
 import com.zbwb.mengxi.common.type.Inputable;
 import com.zbwb.mengxi.common.type.Location;
 import com.zbwb.mengxi.common.type.StorageFile;
@@ -111,13 +109,6 @@ public enum InputType implements Inputable {
         if (clazz == Location.class) {
             return LOCATION;
         }
-
-        if (DefaultModelManager.contain(clazz)) {
-            return OPTION;
-        }
-//        if (ModelUtils.isModel(clazz)) {
-//            return OPTION;
-//        }
-        throw new AssertionError();
+        return OPTION;
     }
 }

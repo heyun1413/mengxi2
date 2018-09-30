@@ -2,6 +2,8 @@ package com.zbwb.mengxi.common.util;
 
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Method;
+
 public class MethodUtils {
 
     private static final String GETTER_PREFIX = "get";

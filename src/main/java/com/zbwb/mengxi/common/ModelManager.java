@@ -1,8 +1,7 @@
 package com.zbwb.mengxi.common;
 
 import com.zbwb.mengxi.common.domain.Menu;
-import com.zbwb.mengxi.common.domain.ModelBean;
-import com.zbwb.mengxi.common.domain.ModuleBean;
+import com.zbwb.mengxi.common.model.ModelBean;
 
 import java.util.List;
 

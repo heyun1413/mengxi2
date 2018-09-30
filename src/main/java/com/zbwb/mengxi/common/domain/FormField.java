@@ -30,7 +30,7 @@ public class FormField {
     private final boolean nullable;
 
 
-    FormField(String label, String value, String path, InputType inputType, boolean nullable) {
+    public FormField(String label, String value, String path, InputType inputType, boolean nullable) {
         this.label = label;
         this.value = value;
         this.path = path;
