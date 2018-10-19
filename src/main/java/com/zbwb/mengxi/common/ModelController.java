@@ -1,5 +1,6 @@
 package com.zbwb.mengxi.common;
 
+import com.zbwb.mengxi.common.anno.Permission;
 import com.zbwb.mengxi.common.domain.FormField;
 import com.zbwb.mengxi.common.domain.IndexPage;
 import com.zbwb.mengxi.common.domain.Page;
@@ -7,6 +8,8 @@ import com.zbwb.mengxi.common.em.Operation;
 import com.zbwb.mengxi.common.model.ModelBean;
 import com.zbwb.mengxi.common.parser.QueryParamParser;
 import com.zbwb.mengxi.common.resolver.ClassResolver;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,12 +52,17 @@ public class ModelController {
 //            }
 //        }
 
+
         for (Method method : getClass().getMethods()) {
             RequestMapping annotation = method.getAnnotation(RequestMapping.class);
             if (annotation != null) {
 
             }
         }
+    }
+
+    private static void checkPermission(String modelName, String methodName) {
+//        SecurityUtils.getSubject().checkPermission(String.format("%s:%s", modelName, methodName));
     }
 
     /**
@@ -66,13 +74,16 @@ public class ModelController {
      * @return 首页
      */
     @GetMapping
+    @Permission(label = "首页")
     public String index(
             Model model,
             @PathVariable String modelName,
             @RequestParam(required = false, defaultValue = "1") int pageNo,
             @RequestParam(required = false) String queryParams) {
 
+        checkPermission(modelName, "index");
 
+//        org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor
         final ModelBean modelBean = modelManager.get(modelName);
         final DetachedCriteria detachedCriteria = CommonDao.detachedCriteria(modelBean.getType(), queryParamParser.parse(queryParams));
         Page<Object> objectPage = commonDao.find(pageNo, detachedCriteria);
@@ -83,7 +94,7 @@ public class ModelController {
         model.addAttribute("headers", indexPage.getHeaders());
         model.addAttribute("tabOperations", Operation.tabOperations());
         model.addAttribute("listItemOperations", Operation.listItemOperations());
-        return "list";
+        return "list2";
     }
 
 
@@ -97,17 +108,28 @@ public class ModelController {
      */
     @PostMapping
     @Transactional(rollbackFor = Exception.class)
-    public String save(@PathVariable String modelName,
+    public String add(@PathVariable String modelName,
                       ClassResolver classResolver) {
 
+        checkPermission(modelName, "add");
         Object object = classResolver.resolve(modelManager.get(modelName).getType());
         BaseEntity entity = (BaseEntity) object;
         if (isNone(entity.getId())) {
             entity.setId(null);
             commonDao.save(object);
         }
-        else {
-            commonDao.update(object);
+        return "redirect:/private/" + modelName;
+    }
+
+    @PutMapping
+    @Transactional(rollbackFor = Exception.class)
+    public String modify(@PathVariable String modelName,
+                       ClassResolver classResolver) {
+        checkPermission(modelName, "modify");
+        Object object = classResolver.resolve(modelManager.get(modelName).getType());
+        BaseEntity entity = (BaseEntity) object;
+        if (!isNone(entity.getId())) {
+            commonDao.save(object);
         }
         return "redirect:/private/" + modelName;
     }

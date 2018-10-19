@@ -39,7 +39,7 @@ public class VideoMonitor extends DataDomain {
         this.monitorUrl = monitorUrl;
     }
 
-    @Show(title = "创建时间")
+    @Show(title = "创建时间", atForm = false)
     @Transient
     @Override
     public Date getCreateDate() {

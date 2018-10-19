@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
 @Configuration
-@ComponentScan("com.thinkgem.config")
+@ComponentScan("com.zbwb.mengxi.module")
 @PropertySources(@PropertySource("classpath:showdoc.properties"))
 public class ShowDocConfig {
 

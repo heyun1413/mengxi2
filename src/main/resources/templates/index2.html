@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>蒙西管理平台</title>
+    <link rel="stylesheet" href="/css/bootstrap4.0.0.min.css">
+    <link rel="stylesheet" href="/css/side-menu.css">
+</head>
+<body>
+
+<div class="container-fluid pl0 pr0">
+    <header class="row-fluid">
+    </header>
+    <div class="row-fluid">
+        <!--/*@thymesVar id="menus" type="java.util.List<com.zbwb.mengxi.common.domain.Menu>"*/-->
+        <div class="col-md-2 menu pl0 pr0" style="height: 1000px;">
+            <div th:include="this::row(${menus}, ${1})" th:fragment="row(menus,lv)">
+                <ul th:class="${lv>1?'hide':''}">
+                    <li th:each="menu:${menus}">
+                        <a th:href="@{/private/{modelName}(modelName=${menu.getModelName()})}"
+                           class="nav-link menu" >
+                            <span th:text="${'&nbsp;&nbsp;&nbsp;&nbsp;'*lv+menu.name}"></span>
+                            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                        </a>
+                        <th:block th:if="${menu.hasChildren()}" th:include="this::row(${menu.children},${lv+1})"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+        </div>
+    </div>
+</div>
+<script src="/js/jquery3.3.1.min.js" ></script>
+<script src="/js/bootstrap4.1.1.min.js"></script>
+<script>
+    var $menuLi = $('.menu li');
+    $menuLi.click(function (e) {
+        e.preventDefault();
+        $menuLi.removeClass('active')
+        $(this).toggleClass('active');
+        var ul = $(this).children('ul');
+        if (ul.length) {
+            if (ul.hasClass('hide')) {
+                ul.removeClass('hide');
+            }
+        } else {
+            location.href = $(this).find('a').attr('href');
+        }
+    });
+</script>
+</body>
+</html>

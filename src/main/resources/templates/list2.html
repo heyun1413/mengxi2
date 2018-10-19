@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>蒙西管理平台</title>
+    <link rel="stylesheet" href="/css/bootstrap4.0.0.min.css">
+    <link rel="stylesheet" href="/css/side-menu.css">
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+
+</head>
+<body>
+
+<div class="container-fluid pl0 pr0">
+    <header class="row-fluid">
+    </header>
+    <div class="row-fluid">
+        <!--/*@thymesVar id="menus" type="java.util.List<com.zbwb.mengxi.common.domain.Menu>"*/-->
+        <!--/*@thymesVar id="menu" type="com.zbwb.mengxi.common.domain.Menu"*/-->
+        <div class="col-md-2 menu pl0 pr0" style="height: 1000px;">
+
+        </div>
+        <div class="col-md-10">
+            ooo
+        </div>
+    </div>
+</div>
+<script src="/js/jquery3.3.1.min.js" ></script>
+<script src="/js/bootstrap4.1.1.min.js"></script>
+<script src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script>
+//    var $menuLi = $('.menu li');
+//    $menuLi.click(function (e) {
+//        e.preventDefault();
+//        $menuLi.removeClass('active')
+//        $(this).toggleClass('active');
+//        var ul = $(this).children('ul');
+//        if (ul.length) {
+//            if (ul.hasClass('hide')) {
+//                ul.removeClass('hide');
+//            }
+//        } else {
+//            location.href = $(this).find('a').attr('href');
+//        }
+//    });
+function Employee ( name, position, salary, office ) {
+    this.name = name;
+    this.position = position;
+    this.salary = salary;
+    this._office = office;
+    this.office = function() {
+        return this._office;
+    }
+};
+$('#table').DataTable( {
+        data: [
+            new Employee( "Tiger Nixon", "System Architect", "$3,120", "Edinburgh"),
+            new Employee( "Garrett Winters", "Director", "$5,300", "Edinburgh")
+        ],
+        columns: [
+            { data: 'name'},
+            { data: 'salary'},
+            { data: 'office'},
+            { data: 'position'}
+        ]
+    } );
+</script>
+</body>
+</html>

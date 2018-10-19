@@ -83,7 +83,7 @@ public class CommonController {
     @GetMapping("/index")
     public String toIndex(Model model) {
         model.addAttribute("menus", modelManager.allMenu());
-        return "index";
+        return "index2";
     }
 
     @PostMapping("/uploadImage")
