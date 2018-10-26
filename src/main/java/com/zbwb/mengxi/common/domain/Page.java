@@ -14,11 +14,10 @@ import java.util.List;
  */
 public class Page<T> {
 
-	private static final int DEFAULT_PAGE_SIZE = 10;
 	
 	private int pageNo = 1;
 
-	private int pageSize = DEFAULT_PAGE_SIZE;
+	private int pageSize;
 	
 	private long count;
 

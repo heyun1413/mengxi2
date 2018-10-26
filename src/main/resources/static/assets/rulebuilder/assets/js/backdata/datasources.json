@@ -1,9 +1,0 @@
-{
-	"columns":[
-		{"id":"barca","sourceName":"巴塞罗那","entityPath":"barcelona-spa"},
-		{"id":"napoli","sourceName":"那不勒斯","entityPath":"naplese-ita"},
-		{"id":"urawa","sourceName":"浦和红钻","entityPath":"urawa-jpa"},
-		{"id":"kashima","sourceName":"鹿岛鹿角","entityPath":"kashima-jpa"},
-		{"id":"sichuan","sourceName":"四川全兴","entityPath":"chengdu-chn"}
-	]
-}

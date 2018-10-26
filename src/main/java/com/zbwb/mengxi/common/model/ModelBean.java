@@ -1,14 +1,8 @@
 package com.zbwb.mengxi.common.model;
 
-import com.zbwb.mengxi.common.BaseEntity;
-import com.zbwb.mengxi.common.CommonDao;
-import com.zbwb.mengxi.common.domain.FormField;
-import com.zbwb.mengxi.common.domain.IndexPage;
+import com.zbwb.mengxi.common.domain.FormBean;
 import com.zbwb.mengxi.common.domain.Menu;
-import com.zbwb.mengxi.common.domain.Page;
-
-import java.util.List;
-import java.util.Map;
+import com.zbwb.mengxi.common.domain.TableBean;
 
 public interface ModelBean {
 
@@ -18,11 +12,9 @@ public interface ModelBean {
 
     Class<?> getType();
 
-    IndexPage getIndexPage(Page<Object> page, Object queryObject);
+    TableBean getTable();
 
-    List<FormField> getFormPage(Object o);
+    FormBean getForm();
 
     Menu toMenu();
-
-    Map<String, List<? extends BaseEntity>> getOptions(CommonDao commonDao);
 }

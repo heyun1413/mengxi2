@@ -12,16 +12,13 @@ import java.util.List;
  */
 public class ModuleBean {
 
-    private final String packageName;
-
     private final String name;
 
     private final List<ModelBean> models;
 
     private final List<ModuleBean> subModules;
 
-    public ModuleBean(String packageName, String name) {
-        this.packageName = packageName;
+    public ModuleBean(String name) {
         this.name = name;
         this.models = Lists.newArrayList();
         subModules = Lists.newArrayList();
@@ -41,10 +38,6 @@ public class ModuleBean {
 
     public void addModel(ModelBean modelBean) {
         models.add(modelBean);
-    }
-
-    public String getPackageName() {
-        return packageName;
     }
 
 

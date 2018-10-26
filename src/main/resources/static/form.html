@@ -1,0 +1,54 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">单行输入框</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">验证必填项</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">验证手机</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">验证邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+</form>
+<script src="/layui/handlebars.min.js"></script>
+<script id="form-template" type="text/x-handlebars-template">
+    {{#each formFields}}
+    <div class="layui-form-item">
+        <label class="layui-form-label">{{label}}</label>
+        <div class="layui-input-block">
+            <input type="text" name="{{path}}" value="{{value}}" lay-verify="title" autocomplete="off" placeholder="请输入{{label}}" class="layui-input">
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script>
+    if (modelUri) {
+        layui.use(['form', 'layer', 'table'], function () {
+            var source   = layui.jquery("#form-template").html()
+
+            var template = Handlebars.compile(source);
+            layui.jquery.getJSON(modelUri + '/form', function (res) {
+                console.log(res);
+                var html = template(res);
+                console.log(html);
+            });
+        });
+    }
+</script>

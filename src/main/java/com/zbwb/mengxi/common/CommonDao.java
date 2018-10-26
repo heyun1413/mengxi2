@@ -48,8 +48,9 @@ public class CommonDao {
      * @return 分页数据
      */
     @SuppressWarnings("unchecked")
-    public <T> Page<T> find(int pageNo, DetachedCriteria criteria) {
+    public <T> Page<T> find(int pageNo, int pageSize, DetachedCriteria criteria) {
         Page<T> page = new Page<>();
+        page.setPageSize(pageSize);
         page.setPageNo(pageNo);
         final Criteria executableCriteria = criteria.getExecutableCriteria(session());
         page.setCount((Long) executableCriteria

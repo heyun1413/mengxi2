@@ -1,5 +1,6 @@
 package com.zbwb.mengxi.common;
 
+import com.zbwb.mengxi.common.model.ModelManager;
 import com.zbwb.mengxi.module.system.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -83,7 +84,7 @@ public class CommonController {
     @GetMapping("/index")
     public String toIndex(Model model) {
         model.addAttribute("menus", modelManager.allMenu());
-        return "index2";
+        return "frame";
     }
 
     @PostMapping("/uploadImage")
